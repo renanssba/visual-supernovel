@@ -50,12 +50,12 @@ public class ScriptReader : MonoBehaviour {
   public int GetNextElseLine(){
     for (int i = currentLine+1 ; i < script.Length ; i++){
       string line = script [i];
-      if (line == "else"){        
+      if (line == "else" || line == "endif"){        
         return i;
       }   
     }
 
-    Debug.LogError ("NO ELSE FOUND");
+    Debug.LogError ("NO ELSE/ENDIF FOUND");
 
     return -1;
   }
