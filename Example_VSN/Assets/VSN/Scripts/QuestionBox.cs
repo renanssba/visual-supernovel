@@ -34,10 +34,10 @@ public class QuestionBox : MonoBehaviour {
       }
     }
     
-    if(choiceTexts.Length == 2) {
-      transform.position = new Vector3(0f, -0.7f, 0f);
-    } else {
-      transform.position = Vector3.zero;
-    }
+//    if(choiceTexts.Length == 2) {
+//      transform.position = new Vector3(0f, -0.7f, 0f);
+//    } else {
+//      transform.position = Vector3.zero;
+//    }
   }
 }

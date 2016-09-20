@@ -31,7 +31,7 @@ public class Command : MonoBehaviour {
     if(command == "wait" || command == "say" || command == "choices" ||
        command == "collect" || command == "fade_out" || command == "fade_in" ||
        command == "minigame_start" || command == "to_start_menu" ||
-       command == "topic_new")
+       command == "topic_new" || command == "end_script")
       return true;
     else
       return false;
@@ -170,9 +170,12 @@ public class Command : MonoBehaviour {
       case "flash":
         Flash_Command (param);
         break;
-    case "else":
-      Else_Command ();
-      break;
+      case "end_script":
+        EndScript_Command();
+        break;
+      case "else":
+        Else_Command ();
+        break;
       default:
 			//Debug.log("WRONG COMMAND: " + command);
         break;
@@ -192,6 +195,11 @@ public class Command : MonoBehaviour {
 
 //    flashImage.GetComponent<CanvasGroup> ().DOFade (0f, flashDuration);
       
+  }
+
+  void EndScript_Command(){
+    Debug.Log("Calling endscript");
+    GameController.GetInstance().PauseVSN();
   }
 
   void Lettering_Command(string[] param){
@@ -230,8 +238,7 @@ public class Command : MonoBehaviour {
       //Debug.log("Error! Sent too few arguments to analytics command");
       return;
     }
-
-    Analytics.CustomEvent("commandEvent", new Dictionary<string, object>{ { param[0], param[1] } });
+    
   }
 
   public static void Player_Prefs_Command(string[] param) {
@@ -267,23 +274,23 @@ public class Command : MonoBehaviour {
   }
 
   void Music_Command(string[] args) {
-    AudioController.GetInstance().PlayMusic(args[0]);
+//    AudioController.GetInstance().PlayMusic(args[0]);
   }
 
   void Music_Arg_Command(string[] args) {
-    AudioController.GetInstance().SetMusicArgument(float.Parse(args[0]));
+//    AudioController.GetInstance().SetMusicArgument(float.Parse(args[0]));
   }
 
   void Ambience_Command(string[] args) {
-    AudioController.GetInstance().PlayAmbience(args[0], float.Parse(args[1]));
+//    AudioController.GetInstance().PlayAmbience(args[0], float.Parse(args[1]));
   }
 
   void Fade_Out_Music_Command(string[] args) {
-    AudioController.GetInstance().FadeMusic(float.Parse(args[0]));
+//    AudioController.GetInstance().FadeMusic(float.Parse(args[0]));
   }
 
   void Sfx_Command(string[] args) {
-    AudioController.GetInstance().PlaySfx(args[0]);
+//    AudioController.GetInstance().PlaySfx(args[0]);
   }
 
   void Minigame_Start_Command(string[] args) {
@@ -432,7 +439,7 @@ public class Command : MonoBehaviour {
 			
       string name = param[i];
       float pitch = float.Parse(param[i + 1]);
-      AudioController.GetInstance().SetCharacterPitch(name, pitch);
+//      AudioController.GetInstance().SetCharacterPitch(name, pitch);
     }
   }
 
@@ -601,9 +608,9 @@ public class Command : MonoBehaviour {
   }
 		
 
-  public void Fade_In_Command(string[] anim_time) {
-    fade.FadeIn(float.Parse(anim_time[0]));
-    Wait_Command(anim_time);
+  public void Fade_In_Command(string[] args) {
+    fade.FadeIn(float.Parse(args[0]));
+    Wait_Command(args);
   }
 
   public void Fade_Out_Command(string[] anim_time) {
@@ -686,7 +693,7 @@ public class Command : MonoBehaviour {
     Resources.UnloadUnusedAssets();
 
     // sound effect
-    AudioController.GetInstance().PlayConfirmSound();
+//    AudioController.GetInstance().PlayConfirmSound();
 
     // informative message
     if(Persistence.ReachCheckpoint(chapter, checkpoint)) {

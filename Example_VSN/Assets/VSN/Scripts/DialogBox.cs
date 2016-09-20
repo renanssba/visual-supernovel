@@ -45,7 +45,7 @@ public class DialogBox : MonoBehaviour {
   }
 
   public void SetCharacterName(string characterName) {
-    AudioController.GetInstance().SetDialogPitch(characterName);
+//    AudioController.GetInstance().SetDialogPitch(characterName);
     charNameText.text = characterName;
     characterTalking = characterName;
   }
@@ -148,11 +148,11 @@ public class DialogBox : MonoBehaviour {
   }
 
   public void SetSfxName(string sfx_name) {
-    AudioController.GetInstance().SetDialogSfxClip(sfx_name);
+//    AudioController.GetInstance().SetDialogSfxClip(sfx_name);
   }
 
   void PlayDialogSfx() {
-    AudioController.GetInstance().PlayDialogSound();
+//    AudioController.GetInstance().PlayDialogSound();
   }
 
 

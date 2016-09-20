@@ -6,10 +6,10 @@ using System.Collections.Generic;
 
 public class GameController : MonoBehaviour {
 	
-  public static GameController instance;
+  private static GameController instance;
 
-  public GameState gameState;
-  public TextAsset[] scriptList = new TextAsset[4];
+  public GameState gameState = GameState.PlayingScript;
+//  public TextAsset[] scriptList = new TextAsset[4];
   public int chapterId = -1;
   public int lineStarted = -1;
   public int checkpointStarted = -1;
@@ -18,13 +18,13 @@ public class GameController : MonoBehaviour {
 
   public Sprite bgTemp { get; set; }
 
-//	  public Quit quit;
+  //	  public Quit quit;
   public CharacterList charList;
 
   public DialogBox dialogBox;
   public DialogScreen screen;
   public ScriptReader reader;
-//  public Inventory inventory;
+  //  public Inventory inventory;
 
   private int[] choices;
   private int testimonyNextWp;
@@ -32,6 +32,7 @@ public class GameController : MonoBehaviour {
   private string questionName;
 
   void Awake() {
+    dialogBox.gameObject.SetActive(false);
     instance = this;
   }
 
@@ -46,61 +47,34 @@ public class GameController : MonoBehaviour {
     Dialog,
     Question,
     Collection,
-    Waiting,
+    Idle,
     Inventory,
-    ChooseTopic
+    ChooseTopic,
+    Paused
   }
 
 	
   void Start() {
-    dialogBox.gameObject.SetActive(false);
-				
-    reader.SetCurrentScript(scriptList[0]);
-
-    DebugMode.gameController = this;
-		
-    reader.LoadScript(checkpointStarted);
-
     // load the character animations here
     //Persistence.DeleteCharacterAnims();
     //Persistence.GetInstance().CreateCharacterAnims();
 
-    lineStarted = reader.checkpoints[checkpointStarted];
-    ScriptReader.GetInstance().GoToLine(lineStarted);
-		
-    //GameObject.FindWithTag("MainCanvas").transform.Find("UI Elements").transform.Find("OptionsMenu").GetComponent<Options>().LoadOptions();
-    gameState = GameState.PlayingScript;
+    if(gameState == GameState.PlayingScript)
+      StartVSN();
   }
 
   void Update() {
-//     TODO(renan) make it open the quit confirm window
-//    if(Input.GetKeyDown(KeyCode.Escape)) 
-//			Application.Quit();
-
-//    if(Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
-//      ClickedScreen();
-		
-    /*
-    if(inventory.IsActive() == false)
-      CheckToPlayScript();
-     */
-
-		CheckToPlayScript ();
-
-    if(Input.GetKey(KeyCode.S) && Persistence.debugMode){
-      ClickedScreen ();
-    }   
+    CheckToPlayScript();
   }
 
   public void ClickedScreen() {
-    Debug.Log("clicked screen!");
     switch(gameState) {
-      case GameState.Dialog:
-        AdvanceDialog();
-        break;
-      case GameState.Question:
-        SkipDialog();
-        break;
+    case GameState.Dialog:
+      AdvanceDialog();
+      break;
+    case GameState.Question:
+      SkipDialog();
+      break;
     }
   }
 
@@ -124,8 +98,7 @@ public class GameController : MonoBehaviour {
   public void ChooseOption(int value) {
     SkipDialog();
     AnswerQuestion(value);
-
-    Analytics.CustomEvent("choiceEvent", new Dictionary<string, object>{ { questionName, labelNames[value] } });
+    
   }
 
   public void SetQuestion(string question) {
@@ -137,7 +110,7 @@ public class GameController : MonoBehaviour {
   }
 
   void AnswerQuestion(int choiceIndex) {
-    ScriptReader.GetInstance().GoToLine(choices[choiceIndex]);
+    ScriptReader.GetInstance().GoToLine(choices [choiceIndex]);
     gameState = GameState.PlayingScript;
   }
 
@@ -182,7 +155,7 @@ public class GameController : MonoBehaviour {
   }
 
   public void WaitForItem() {
-    gameState = GameState.Waiting;
+    gameState = GameState.Idle;
   }
 
   public void WaitSeconds(float time) {
@@ -190,7 +163,7 @@ public class GameController : MonoBehaviour {
   }
 
   IEnumerator Wait(float time) {
-    gameState = GameState.Waiting;
+    gameState = GameState.Idle;
     yield return new WaitForSeconds(time);
     gameState = GameState.PlayingScript;
   }
@@ -204,12 +177,47 @@ public class GameController : MonoBehaviour {
   }
 
   public void AdvanceChapter() {
-    if(chapterId < 4) {
-      Persistence.SetChapterAccess(chapterId + 1, 1);
-      Persistence.ReachCheckpoint(chapterId + 1, 0);
-      Persistence.Load(chapterId + 1, 0);
-    } else { // if playing the last chapter, go back to title screen      
+    Persistence.SetChapterAccess(chapterId + 1, 1);
+    Persistence.ReachCheckpoint(chapterId + 1, 0);
+    Persistence.Load(chapterId + 1, 0);
+  }
+
+
+
+  public void StartVSN(){
+    StartVSNScript("VSN_example_script");
+  }
+
+  public void StartVSNScript(string scriptToLoad){
+//    dialogBox.gameObject.SetActive(true);
+    screen.gameObject.SetActive(true);
+    gameState = GameState.PlayingScript;
+
+
+    TextAsset asset = Resources.Load<TextAsset>(scriptToLoad);
+    if(asset == null){
+      Debug.LogError("Error loading VSN Script: " + scriptToLoad);
     }
+    reader.SetCurrentScript( asset );
+
+
+
+    DebugMode.gameController = this;
+
+    reader.LoadScript(checkpointStarted);
+
+    lineStarted = reader.checkpoints [checkpointStarted];
+    ScriptReader.GetInstance().GoToLine(lineStarted);
+  }
+
+  public void ResumeVSN() {
+    gameState = GameState.PlayingScript;
+    screen.gameObject.SetActive(true);
+  }
+
+  public void PauseVSN() {
+    gameState = GameState.Paused;
+    screen.gameObject.SetActive(false);
   }
 
   public void ExitGame() {

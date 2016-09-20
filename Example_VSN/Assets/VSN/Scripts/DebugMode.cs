@@ -15,15 +15,24 @@ public class DebugMode : MonoBehaviour {
 	void Update () {
 
 		// Debug Mode Commands
-		if( Persistence.debugMode || true){
+		if( Persistence.debugMode){
 			if( Input.GetKeyDown(KeyCode.F5) && gameController ){ 
 				gameController.ReloadLevel();
 			}
 		}
 
     if(Input.GetKeyDown(KeyCode.F12)){
-      AudioController.GetInstance().PlayClickSound();
+//      AudioController.GetInstance().PlayClickSound();
 			Persistence.SetDebugMode( !Persistence.debugMode );
 		}
+
+    if(Input.GetKey(KeyCode.S) && Persistence.debugMode) {
+      FastForwardText();
+    }
 	}
+
+  void FastForwardText(){
+    GameController.GetInstance().ClickedScreen();
+  }
+
 }

@@ -38,10 +38,10 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="UnityEngine">
-      <HintPath>C:/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+      <HintPath>C:/Program Files (x86)/Unity_5.3/Editor/Data/Managed/UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor">
-      <HintPath>C:/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+      <HintPath>C:/Program Files (x86)/Unity_5.3/Editor/Data/Managed/UnityEditor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -65,29 +65,31 @@
      <Compile Include="Assets\VSN\Scripts\Persistence.cs" />
      <Compile Include="Assets\VSN\Scripts\QuestionBox.cs" />
      <Compile Include="Assets\VSN\Scripts\ScriptReader.cs" />
-     <Compile Include="Assets\VSN\Scripts\StudioListener.cs" />
      <None Include="Assets\VSN\Demigiant\DOTween\readme.txt" />
      <None Include="Assets\VSN\Demigiant\DOTween\DOTween43.xml" />
      <None Include="Assets\VSN\Demigiant\DOTween\DOTween46.xml" />
+     <None Include="Assets\Resources\VSN_example_script_2.txt" />
      <None Include="Assets\VSN\VSN Scripts\example_script.txt" />
+     <None Include="Assets\Resources\VSN_example_script_1.txt" />
+     <None Include="Assets\Resources\VSN_example_script.txt" />
      <None Include="Assets\VSN\Demigiant\DOTween\DOTween50.xml" />
  <Reference Include="UnityEngine.UI">
- <HintPath>C:/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+ <HintPath>C:/Program Files (x86)/Unity_5.3/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Networking">
- <HintPath>C:/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
- </Reference>
- <Reference Include="DOTween43">
- <HintPath>C:/example_vsn/Example_VSN/Assets/VSN/Demigiant/DOTween/DOTween43.dll</HintPath>
- </Reference>
- <Reference Include="DOTween46">
- <HintPath>C:/example_vsn/Example_VSN/Assets/VSN/Demigiant/DOTween/DOTween46.dll</HintPath>
+ <HintPath>C:/Program Files (x86)/Unity_5.3/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
  </Reference>
  <Reference Include="DOTween">
- <HintPath>C:/example_vsn/Example_VSN/Assets/VSN/Demigiant/DOTween/DOTween.dll</HintPath>
+ <HintPath>C:/Users/Public/Documents/Unity Projects/Visual-Supernovel/Example_VSN/Assets/VSN/Demigiant/DOTween/DOTween.dll</HintPath>
+ </Reference>
+ <Reference Include="DOTween43">
+ <HintPath>C:/Users/Public/Documents/Unity Projects/Visual-Supernovel/Example_VSN/Assets/VSN/Demigiant/DOTween/DOTween43.dll</HintPath>
+ </Reference>
+ <Reference Include="DOTween46">
+ <HintPath>C:/Users/Public/Documents/Unity Projects/Visual-Supernovel/Example_VSN/Assets/VSN/Demigiant/DOTween/DOTween46.dll</HintPath>
  </Reference>
  <Reference Include="DOTween50">
- <HintPath>C:/example_vsn/Example_VSN/Assets/VSN/Demigiant/DOTween/DOTween50.dll</HintPath>
+ <HintPath>C:/Users/Public/Documents/Unity Projects/Visual-Supernovel/Example_VSN/Assets/VSN/Demigiant/DOTween/DOTween50.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -13,7 +13,7 @@ public class ScriptReader : MonoBehaviour {
 	public int[] checkpoints = new int[14];
   public int currentLine = -1;
 
-  private TextAsset currentScript;
+  public TextAsset currentScript;
   private int totalLines;
 
   public void Awake(){
@@ -67,8 +67,6 @@ public class ScriptReader : MonoBehaviour {
         return i;
       }   
     }
-
-
 
     Debug.LogError ("NO ENDIF FOUND");
 
