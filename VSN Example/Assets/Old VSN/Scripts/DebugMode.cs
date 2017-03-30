@@ -3,12 +3,12 @@ using System.Collections;
 
 public class DebugMode : MonoBehaviour {
 
-	public static VSNController gameController;
+	public static OldVSNController gameController;
 
 	void Start(){
 		GameObject gc = GameObject.FindWithTag("GameController");
 		if(gc){
-			gameController = gc.GetComponent<VSNController>();
+			gameController = gc.GetComponent<OldVSNController>();
 		}
 	}
 
@@ -32,7 +32,7 @@ public class DebugMode : MonoBehaviour {
 	}
 
   void FastForwardText(){
-    VSNController.GetInstance().ClickedScreen();
+    OldVSNController.GetInstance().ClickedScreen();
   }
 
 }

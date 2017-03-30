@@ -190,12 +190,12 @@ public class Persistence : MonoBehaviour {
 
       if(line.Length >= 10) {				
         if(line.Substring(0, 10).ToLower() == "mouth_anim") {
-          VSNCommands.CheckAnimCommand(line, lineCount);
+          OldVSNCommands.CheckAnimCommand(line, lineCount);
         }
       }
       if(line.Length >= 15) {				
         if(line.Substring(0, 15).ToLower() == "eye_blink_anim") {
-          VSNCommands.CheckAnimCommand(line, lineCount);
+          OldVSNCommands.CheckAnimCommand(line, lineCount);
         }
       }
 			

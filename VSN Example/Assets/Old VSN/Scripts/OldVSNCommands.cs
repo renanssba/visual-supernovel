@@ -7,9 +7,9 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using DG.Tweening;
 
-public class VSNCommands : MonoBehaviour {
+public class OldVSNCommands : MonoBehaviour {
 
-  public static VSNCommands instance;
+  public static OldVSNCommands instance;
 
   public Dictionary<string, int> waypoints = new Dictionary<string, int>();
 
@@ -21,7 +21,7 @@ public class VSNCommands : MonoBehaviour {
     instance = this;
   }
 
-  public static VSNCommands GetInstance(){
+  public static OldVSNCommands GetInstance(){
     return instance;
   }
 
@@ -43,7 +43,7 @@ public class VSNCommands : MonoBehaviour {
     //Debug.log("line " + lineNumber+": "+line );
     string command = GetCommand(line);
     string[] param = GetParams(line);
-    VSNScriptReader.GetInstance().GoToLine(lineNumber);
+    OldVSNScriptReader.GetInstance().GoToLine(lineNumber);
 		
     switch(command) {
       case "player_prefs":
@@ -159,23 +159,23 @@ public class VSNCommands : MonoBehaviour {
 
   void EndScript_Command() {
     Debug.Log("Calling endscript");
-    VSNController.GetInstance().PauseVSN();
-    VSNController.GetInstance().ClearScriptPositionStack();
+    OldVSNController.GetInstance().PauseVSN();
+    OldVSNController.GetInstance().ClearScriptPositionStack();
   }
 
   void GotoScript_Command(string[] param) {
-    VSNController.GetInstance().PauseVSN();
-    VSNController.GetInstance().SaveScriptPositionInStack();
-    VSNController.GetInstance().StartVSNScript(param[0]);
+    OldVSNController.GetInstance().PauseVSN();
+    OldVSNController.GetInstance().SaveScriptPositionInStack();
+    OldVSNController.GetInstance().StartVSNScript(param[0]);
   }
 
   void ResumeScript_Command(string[] param) {
-    VSNController.ScriptPosition pos = VSNController.GetInstance().LastScriptStackEntry();
-    VSNController.GetInstance().PauseVSN();
+    OldVSNController.ScriptPosition pos = OldVSNController.GetInstance().LastScriptStackEntry();
+    OldVSNController.GetInstance().PauseVSN();
     if(param.Length > 0){
-      VSNController.GetInstance().StartVSNScript(pos.scriptName, param[0]);
+      OldVSNController.GetInstance().StartVSNScript(pos.scriptName, param[0]);
     }else{
-      VSNController.GetInstance().StartVSNScript(pos.scriptName, pos.scriptLine);
+      OldVSNController.GetInstance().StartVSNScript(pos.scriptName, pos.scriptLine);
     }
   }		
 
@@ -216,13 +216,13 @@ public class VSNCommands : MonoBehaviour {
     float time = float.Parse(waitTime[0]);
     screen.EnableDialogBox(false);
     screen.choices.SetActive(false);
-    VSNController.GetInstance().WaitSeconds(time);
+    OldVSNController.GetInstance().WaitSeconds(time);
   }
 
   void WaitAnswerConfirm_Command(string[] param){
     screen.EnableDialogBox(false);
     screen.choices.SetActive(false);
-    VSNController.GetInstance().WaitForValidation(param[0], param[1]);
+    OldVSNController.GetInstance().WaitForValidation(param[0], param[1]);
   }
 
 
@@ -256,13 +256,13 @@ public class VSNCommands : MonoBehaviour {
 
   void Say_Command(string[] param) {
 
-    VSNController.GetInstance().SetDialogState();
+    OldVSNController.GetInstance().SetDialogState();
     if(param.Length > 1) {
       screen.SetDialog(param[0], param[1]);
-      VSNController.GetInstance().charList.MakeCharTalk(param[0]);
+      OldVSNController.GetInstance().charList.MakeCharTalk(param[0]);
     } else {
       screen.SetDialog(param[0]);
-      VSNController.GetInstance().charList.MakeCharTalk(screen.GetTalkingCharName());
+      OldVSNController.GetInstance().charList.MakeCharTalk(screen.GetTalkingCharName());
     }
   }
 		
@@ -291,7 +291,7 @@ public class VSNCommands : MonoBehaviour {
 
   void Move_x_Command(string[] param) {
 		
-    int char_index = VSNController.GetInstance().charList.GetCharIdByParam(param[0]);
+    int char_index = OldVSNController.GetInstance().charList.GetCharIdByParam(param[0]);
     float anim_time = float.Parse(param[1]);
     float destination_x = float.Parse(param[2]);
 		
@@ -300,7 +300,7 @@ public class VSNCommands : MonoBehaviour {
 
   void Move_y_Command(string[] param) {
 		
-    int char_index = VSNController.GetInstance().charList.GetCharIdByParam(param[0]);
+    int char_index = OldVSNController.GetInstance().charList.GetCharIdByParam(param[0]);
     float anim_time = float.Parse(param[1]);
     float destination_y = float.Parse(param[2]);
 
@@ -337,7 +337,7 @@ public class VSNCommands : MonoBehaviour {
 
   void AnimAlpha_Command(string[] param) {
 
-    int char_index = VSNController.GetInstance().charList.GetCharIdByParam(param[0]);
+    int char_index = OldVSNController.GetInstance().charList.GetCharIdByParam(param[0]);
     float alpha = float.Parse(param[1]);
     float time = float.Parse(param[2]);
 		
@@ -346,7 +346,7 @@ public class VSNCommands : MonoBehaviour {
 
   void Anim_Scale_Command(string[] param) {
 
-    int char_index = VSNController.GetInstance().charList.GetCharIdByParam(param[0]);
+    int char_index = OldVSNController.GetInstance().charList.GetCharIdByParam(param[0]);
     float scale = float.Parse(param[1]);
     float time = float.Parse(param[2]);
 
@@ -359,7 +359,7 @@ public class VSNCommands : MonoBehaviour {
       screen.SetQuestion(param[0], param[1]);
 			
       if((param[1])[0] != '(')
-        VSNController.GetInstance().charList.MakeCharTalk(screen.GetTalkingCharName());
+        OldVSNController.GetInstance().charList.MakeCharTalk(screen.GetTalkingCharName());
     } else {
       screen.SetQuestion(param[0]);
 
@@ -367,7 +367,7 @@ public class VSNCommands : MonoBehaviour {
         return;
 			
       if((param[0])[0] != '(')
-        VSNController.GetInstance().charList.MakeCharTalk(screen.GetTalkingCharName());
+        OldVSNController.GetInstance().charList.MakeCharTalk(screen.GetTalkingCharName());
     }
   }
 
@@ -394,7 +394,7 @@ public class VSNCommands : MonoBehaviour {
         tempIndex++;
       }
     }
-    VSNController.GetInstance().SetLabelNames(labelNames);
+    OldVSNController.GetInstance().SetLabelNames(labelNames);
     screen.SetChoices(choiceText, choiceWaypoint);
   }
   
@@ -403,13 +403,13 @@ public class VSNCommands : MonoBehaviour {
 
 
   void GotoNextElseOrEndif() {
-    int lineNumber = VSNScriptReader.GetInstance().GetElseOrEndifLine();
-    VSNScriptReader.GetInstance().GoToLine(lineNumber);
+    int lineNumber = OldVSNScriptReader.GetInstance().GetElseOrEndifLine();
+    OldVSNScriptReader.GetInstance().GoToLine(lineNumber);
   }
 
   void GotoNextEndif() {
-    int lineNumber = VSNScriptReader.GetInstance().GetEndifLine();
-    VSNScriptReader.GetInstance().GoToLine(lineNumber);
+    int lineNumber = OldVSNScriptReader.GetInstance().GetEndifLine();
+    OldVSNScriptReader.GetInstance().GoToLine(lineNumber);
   }
 
 
@@ -417,7 +417,7 @@ public class VSNCommands : MonoBehaviour {
     if(waypoints.ContainsKey(label[0])) {
       int lineNumber = waypoints[label[0]];
 //      //Debug.log("The label " + label[0] + " has value: "+lineNumber);
-      VSNScriptReader.GetInstance().GoToLine(lineNumber);
+      OldVSNScriptReader.GetInstance().GoToLine(lineNumber);
     }
   }
 
@@ -451,7 +451,7 @@ public class VSNCommands : MonoBehaviour {
   }
 
   void Mirror_Command(string[] param) {
-    int char_index = VSNController.GetInstance().charList.GetCharIdByParam(param[0]);
+    int char_index = OldVSNController.GetInstance().charList.GetCharIdByParam(param[0]);
     screen.MirrorCharacter(char_index);
   }
 

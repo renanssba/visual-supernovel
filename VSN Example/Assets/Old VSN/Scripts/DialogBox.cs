@@ -221,10 +221,10 @@ public class DialogBox : MonoBehaviour {
 
     talking = false;
 
-    if(VSNController.GetInstance().gameState == VSNController.GameState.Dialog){
+    if(OldVSNController.GetInstance().gameState == OldVSNController.GameState.Dialog){
       ShowIndicatorArrow(true);
     }
-    VSNController.GetInstance().charList.MakeAllCharsStopTalking();
+    OldVSNController.GetInstance().charList.MakeAllCharsStopTalking();
     dialogScreen.EndDialogEffect();
   }
 

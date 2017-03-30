@@ -209,7 +209,7 @@ public class DialogScreen : MonoBehaviour {
 	}
 	
 	public void SetQuestion(string text){
-    VSNController.GetInstance().SetQuestion(text);
+    OldVSNController.GetInstance().SetQuestion(text);
 		dialogBox.Say(text);
 	}
 
@@ -219,7 +219,7 @@ public class DialogScreen : MonoBehaviour {
 	}
 	
   public void SetChoices(string[] text, int[] wp){
-    VSNController.GetInstance().SetQuestionState(wp);
+    OldVSNController.GetInstance().SetQuestionState(wp);
     dialogBox.SetChoicesText(text);
     ChangeScreenLayout(DialogScreen.ScreenLayout.Question);
 	}

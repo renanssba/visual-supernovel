@@ -4,11 +4,11 @@ using System.IO;
 using System.Collections.Generic;
 using System.Reflection;
 
-public class VSNScriptReader : MonoBehaviour {
+public class OldVSNScriptReader : MonoBehaviour {
 	
-  private static VSNScriptReader instance;
+  private static OldVSNScriptReader instance;
 
-  public VSNCommands commandController;
+  public OldVSNCommands commandController;
   public string scriptName;
   public string[] vsnScriptContent;
   public int currentLine = -1;
@@ -20,7 +20,7 @@ public class VSNScriptReader : MonoBehaviour {
     instance = this;
   }
 
-  public static VSNScriptReader GetInstance() {
+  public static OldVSNScriptReader GetInstance() {
     return instance;
   }
 
@@ -51,7 +51,7 @@ public class VSNScriptReader : MonoBehaviour {
     int unclosedIfs = 0;
     for(int i = currentLine + 1; i < vsnScriptContent.Length; i++) {
       string line = vsnScriptContent[i];
-      string command = VSNCommands.GetCommand(line);
+      string command = OldVSNCommands.GetCommand(line);
       if(command == "if") {
         unclosedIfs++;
         continue;
@@ -76,7 +76,7 @@ public class VSNScriptReader : MonoBehaviour {
     int unclosedIfs = 0;
     for(int i = currentLine + 1; i < vsnScriptContent.Length; i++) {
       string line = vsnScriptContent[i];
-      string command = VSNCommands.GetCommand(line);
+      string command = OldVSNCommands.GetCommand(line);
       if(command == "if") {
         unclosedIfs++;
         continue;
@@ -170,13 +170,13 @@ public class VSNScriptReader : MonoBehaviour {
         continue;
       }
 
-      string currentCommand = VSNCommands.GetCommand(line);
+      string currentCommand = OldVSNCommands.GetCommand(line);
       if(currentCommand == "" || currentCommand == null){
         continue;
       }
 
       if(currentCommand == "waypoint") {
-        string[] param = VSNCommands.GetParams(line);
+        string[] param = OldVSNCommands.GetParams(line);
         string waypointName = param[0];
         Debug.Log (waypointName + " in line "+lineCount);
         waypoints.Add(waypointName, lineCount);
