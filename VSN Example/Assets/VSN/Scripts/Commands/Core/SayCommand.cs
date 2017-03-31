@@ -2,11 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CommandAttribute(CommandString="say")]
-public class SayCommand : VsnCommand {
+namespace Command{
+	
+	[CommandAttribute(CommandString="say")]
+	public class SayCommand : VsnCommand {
 
-	public override void Execute (){
-		throw new System.NotImplementedException ();
+		public SayCommand(){
+			VsnDebug.Log("Created new SayCommand");
+		}
+
+
+		public override void Execute (){
+			
+		}
+
+		public override void PrintName (){
+			VsnDebug.Log("PrintName: SayCommand");
+		}
+
 	}
-
 }

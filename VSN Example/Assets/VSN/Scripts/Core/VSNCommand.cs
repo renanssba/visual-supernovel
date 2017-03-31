@@ -6,4 +6,5 @@ public abstract class VsnCommand{
 
 	public abstract void Execute ();
 
+	public abstract void PrintName ();
 }

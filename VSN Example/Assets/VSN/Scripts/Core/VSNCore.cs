@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Text.RegularExpressions;
+using System;
+using System.Reflection;
 
 public class VsnCore : MonoBehaviour {
 
@@ -9,6 +11,12 @@ public class VsnCore : MonoBehaviour {
 
 	void Awake(){
 		VsnDebug.Log ("VSN Core has " + subSystemList.Count + " subsystems loaded.");
+
+		foreach (Type type in GetClasses("Command")){
+			VsnCommand vsnCommand = Activator.CreateInstance(type) as VsnCommand;
+			vsnCommand.PrintName();
+		}
+
 	}
 
 	public void ParseVSNCommands (string[] lines){
@@ -19,7 +27,6 @@ public class VsnCore : MonoBehaviour {
 
 			VsnDebug.Log ("Analysing line: " + line);
 			string commandName = Regex.Match (line, "^([\\w\\-]+)").Value;
-			VsnDebug.Log ("Command name: " + commandName);
 
 			MatchCollection valuesMatch = Regex.Matches (line, "[^\\s\"']+|\"[^\"]*\"|'[^']*'");
 
@@ -44,18 +51,15 @@ public class VsnCore : MonoBehaviour {
 	private VsnArgument ParseArgument(string arg){
 		
 		if (arg.StartsWith("\"") && arg.EndsWith("\"")){
-			VsnDebug.Log("String value:" + arg);
 			return new VsnString(arg);
 		}
 
 		if (StringIsDigitsOnly(arg)){
 			float value = float.Parse(arg);
-			VsnDebug.Log("Float value: " + value);
 			return new VsnNumber(float.Parse(arg));
 		}
 
 		//TODO add PROPERsupport for variables
-		VsnDebug.Log("Variable Reference: " + arg);
 		return new VsnVariableReference(arg);
 
 	}
@@ -73,5 +77,21 @@ public class VsnCore : MonoBehaviour {
 		}
 
 		return true;
+	}
+		
+	private List<Type> GetClasses(string nameSpace){
+		Assembly asm = Assembly.GetExecutingAssembly();
+
+		List<string> namespacelist = new List<string>();
+		List<Type> typeList = new List<Type>();
+
+		foreach (Type type in asm.GetTypes())
+		{
+			if (type.Namespace == nameSpace)
+				typeList.Add(type);
+		}
+
+
+		return typeList;
 	}
 }
