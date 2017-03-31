@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VSNDebug{
+public class VsnDebug{
 
 	public static void Log(string msg){
 		if (Application.isEditor) {

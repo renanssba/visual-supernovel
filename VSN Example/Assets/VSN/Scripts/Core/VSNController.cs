@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VSNController : MonoBehaviour {
+public class VsnController : MonoBehaviour {
 
-	public static VSNController instance;
-	public VSNCore core;
+	public static VsnController instance;
+	public VsnCore core;
 
-	private List<VSNCommand> commands;
+	private List<VsnCommand> commands;
 
 	void Awake(){
 		instance = this;
@@ -20,7 +20,7 @@ public class VSNController : MonoBehaviour {
 	/// </summary>
 	/// <param name="scriptPath">Script path from Resources root (e.g \"VSN Scripts/myscript.txt\"</param>
 	public void StartVSN(string scriptPath){
-		VSNDebug.Log ("VSN reading script, path: " + scriptPath);
+		VsnDebug.Log ("VSN reading script, path: " + scriptPath);
 		StartVSNScript (scriptPath);
 	}
 

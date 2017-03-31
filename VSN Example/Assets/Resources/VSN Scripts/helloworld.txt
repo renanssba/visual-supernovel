@@ -1,3 +1,6 @@
 say "Hello, world"
 say "I'm another line"
+
+move_x riderchan 5.2
+
 say "Rider-chan" "RIDER MODE!"

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VSNSubSystem : MonoBehaviour {
+public class VsnSubSystem : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {

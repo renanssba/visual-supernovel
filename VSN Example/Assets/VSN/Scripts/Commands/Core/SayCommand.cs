@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SayCommand : VSNCommand {
+[CommandAttribute(CommandString="say")]
+public class SayCommand : VsnCommand {
 
 	public override void Execute (){
 		throw new System.NotImplementedException ();
