@@ -8,24 +8,25 @@ using System.Reflection;
 public class VsnCore : MonoBehaviour {
 
 	public List<VsnSubSystem> subSystemList;
+	public List<Type> possibleCommandTypes;
 
 	void Awake(){
 		VsnDebug.Log ("VSN Core has " + subSystemList.Count + " subsystems loaded.");
-
-		foreach (Type type in GetClasses("Command")){
-			VsnCommand vsnCommand = Activator.CreateInstance(type) as VsnCommand;
-			vsnCommand.PrintName();
-		}
-
 	}
 
-	public void ParseVSNCommands (string[] lines){
+	public List<VsnCommand> ParseVSNCommands (string[] lines){
+		List<VsnCommand> vsnCommandsFromScript = new List<VsnCommand>();
+
+		possibleCommandTypes = GetClasses("Command");
+
 		VsnDebug.Log ("Analysing " + lines.GetLength (0) + " lines");
 
 		foreach (string line in lines) {			
 			if (line == "\r") continue;
-
 			VsnDebug.Log ("Analysing line: " + line);
+
+			List<VsnArgument> vsnArguments = new List<VsnArgument>();
+
 			string commandName = Regex.Match (line, "^([\\w\\-]+)").Value;
 
 			MatchCollection valuesMatch = Regex.Matches (line, "[^\\s\"']+|\"[^\"]*\"|'[^']*'");
@@ -40,8 +41,44 @@ public class VsnCore : MonoBehaviour {
 
 			foreach(string arg in args){
 				VsnArgument vsnArgument = ParseArgument(arg);
+				vsnArguments.Add(vsnArgument);
+			}
+
+			VsnCommand vsnCommand = InstantiateVsnCommand(commandName, vsnArguments);
+			if (vsnCommand != null){
+				vsnCommandsFromScript.Add(vsnCommand);
 			}
 		}
+
+		return vsnCommandsFromScript;
+	}
+
+	/// <summary>
+	/// Iterates through all command classes searching for one with the correct CommandAttribute matching the commandName
+	/// </summary>
+	/// <returns>The vsn command.</returns>
+	/// <param name="commandName">Command name.</param>
+	/// <param name="vsnArguments">Vsn arguments.</param>
+	private VsnCommand InstantiateVsnCommand(string commandName, List<VsnArgument> vsnArguments){
+		foreach (Type type in possibleCommandTypes){
+			
+			foreach(Attribute attribute in type.GetCustomAttributes(false)){
+				if (attribute is CommandAttribute){
+					CommandAttribute commandAttribute = (CommandAttribute) attribute;
+					if (commandAttribute.CommandString == commandName){
+						VsnCommand vsnCommand = Activator.CreateInstance(type) as VsnCommand;
+						vsnCommand.InjectArguments(vsnArguments);
+
+						// TODO add metadata like line number?...
+
+						return vsnCommand;
+					}
+				}
+			}
+		}
+
+		VsnDebug.Log("Got a null");
+		return null;
 	}
 
 	/// <summary>

@@ -3,25 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Command{
-	
-	[CommandAttribute(CommandString="say")]
-	public class SayCommand : VsnCommand {
 
-		public SayCommand(){
-			VsnDebug.Log("Created new SayCommand");
+	[CommandAttribute(CommandString="move_x")]
+	public class MoveXCommand : VsnCommand {
+
+		public MoveXCommand(){
+			VsnDebug.Log("Created new MoveXCommand");
 		}
 
 
 		public override void Execute (){
-			
+
 		}
 
 		public override void PrintName (){
-			VsnDebug.Log("PrintName: SayCommand");
+			VsnDebug.Log("PrintName: MoveXCommand");
 		}
 
 		public override void InjectArguments (List<VsnArgument> args){
-
+			
 		}
 
 	}

@@ -7,7 +7,7 @@ public class VsnController : MonoBehaviour {
 	public static VsnController instance;
 	public VsnCore core;
 
-	private List<VsnCommand> commands;
+	private List<VsnCommand> vsnCommands;
 
 	void Awake(){
 		instance = this;
@@ -27,7 +27,11 @@ public class VsnController : MonoBehaviour {
 	void StartVSNScript (string scriptPath){
 		TextAsset textAsset = Resources.Load<TextAsset>(scriptPath);
 		string[] lines = textAsset.ToString ().Split ('\n');
-		core.ParseVSNCommands (lines);
 
+		vsnCommands = core.ParseVSNCommands (lines);
+
+		foreach(VsnCommand vsnCommand in vsnCommands){
+			vsnCommand.PrintName();
+		}
 	}
 }
