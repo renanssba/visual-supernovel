@@ -131,14 +131,18 @@ public class VsnSave{
 	public static void Save(){		
 		SaveHandler.Save(savedDataDictionary, SaveSlot, (bool success) => {
 			if (success){
+				VsnDebug.Log("VSN SAVE success");
 			} else{
+				
 			}
 		});
 	}
 
 	public static void Load(){
 		SaveHandler.Load(savedDataDictionary, SaveSlot, (bool success) => {
-			
+			if (success){
+				VsnDebug.Log("VSN LOAD success");
+			}
 		});
 
 

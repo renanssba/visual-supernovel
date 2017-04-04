@@ -12,7 +12,8 @@ public class VsnController : MonoBehaviour {
 	void Awake(){
 		instance = this;
 
-		StartVSN ("VSN Scripts/helloworld");
+		//StartVSN ("VSN Scripts/helloworld");
+
 	}
 
 	/// <summary>
