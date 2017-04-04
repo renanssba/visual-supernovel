@@ -13,6 +13,29 @@ public class VsnController : MonoBehaviour {
 		instance = this;
 
 		//StartVSN ("VSN Scripts/helloworld");
+		VsnDebug.Log("Hello, world");
+		/*
+		VsnSave.SetVariable ("testvar", 18);
+		VsnSave.SetVariable ("characterName", "Fulano");
+		VsnSave.SetVariable ("currentMood", "ILIKETURTLES");
+		VsnSave.Save (1);
+		*/
+
+		string currentMood = "";
+
+		VsnSaveSystem.GetStringVariable ("currentMood");
+		VsnDebug.Log ("currentMood before load: " + currentMood);
+
+		VsnSaveSystem.Load (1);
+
+		currentMood = VsnSaveSystem.GetStringVariable ("currentMood");
+		VsnDebug.Log ("currentMood after load: " + currentMood);
+
+		VsnSaveSystem.Load (2);
+
+		currentMood = VsnSaveSystem.GetStringVariable ("currentMood");
+		VsnDebug.Log ("currentMood after loading wrong save slot: " + currentMood);
+
 
 	}
 

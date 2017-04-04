@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class VsnSave{
+public class VsnSaveSystem{
 
 	static Dictionary<string, string> savedDataDictionary;
 
@@ -38,7 +38,7 @@ public class VsnSave{
 
 	#endregion
 
-	static VsnSave(){
+	static VsnSaveSystem(){
 		SaveSlot = 1;
 		SaveHandler = new DiskSaveHandler();
 
@@ -101,7 +101,7 @@ public class VsnSave{
 		}
 	}	
 
-	public static float GetFloatVariable(string key, bool isGlobal = false){
+	public static float GetNumberVariable(string key, bool isGlobal = false){
 		string savedKey = GetVariableFloatPrefix(key, isGlobal);
 
 		if (savedDataDictionary.ContainsKey(savedKey)){
@@ -128,8 +128,8 @@ public class VsnSave{
 
 	#region save/load
 
-	public static void Save(){		
-		SaveHandler.Save(savedDataDictionary, SaveSlot, (bool success) => {
+	public static void Save(int saveSlot){		
+		SaveHandler.Save(savedDataDictionary, saveSlot, (bool success) => {
 			if (success){
 				VsnDebug.Log("VSN SAVE success");
 			} else{
@@ -138,11 +138,13 @@ public class VsnSave{
 		});
 	}
 
-	public static void Load(){
-		SaveHandler.Load(savedDataDictionary, SaveSlot, (bool success) => {
-			if (success){
+	public static void Load(int saveSlot){
+		SaveHandler.Load(savedDataDictionary, saveSlot, (Dictionary<string,string> dictionary) => {
+			if (dictionary != null){
+				savedDataDictionary = dictionary;
 				VsnDebug.Log("VSN LOAD success");
 			}
+
 		});
 
 

@@ -16,9 +16,10 @@ class DiskSaveHandler : IVsnSaveHandler{
 		string finalJson;
 		string saveString = GetSaveSlotPrefix (saveSlot);
 
-		Dictionary<string, string> savedDictionary = new Dictionary<string, string>();
+		Dictionary<string, string> savedDictionary = dictionary;
 		string savedVariables = GenerateSavedVariables (savedDictionary);
 		//savedDictionary = PrefixDictionary(dictionary, saveSlot);
+		VsnDebug.Log("Setting to playerprefs, string: " + GetSaveSlotPrefix(saveSlot) + ", value: " + savedVariables);
 		PlayerPrefs.SetString(GetSaveSlotPrefix(saveSlot), savedVariables);
 
 
@@ -33,13 +34,12 @@ class DiskSaveHandler : IVsnSaveHandler{
 		callback(success);
 	}
 		
-	void IVsnSaveHandler.Load (Dictionary<string, string> dictionary, int saveSlot, Action<bool> callback){
+	void IVsnSaveHandler.Load (Dictionary<string, string> dictionary, int saveSlot, Action<Dictionary<string,string>> callback){
 		bool success = false;
 		string loadedJson;
 		string saveString = GetSaveSlotPrefix (saveSlot);
 		Dictionary<string, string> loadedDictionary = LoadSavedVariables (saveString);
-
-		callback(success);
+		callback(loadedDictionary);
 	}
 
 	/// <summary>
@@ -64,8 +64,11 @@ class DiskSaveHandler : IVsnSaveHandler{
 		string loadedVariables = PlayerPrefs.GetString (saveString, "");
 
 		string[] separatedVariablePairs = loadedVariables.Split ('@');
-		foreach (string variablePair in separatedVariablePairs) {
+		foreach (string variablePair in separatedVariablePairs) {			
 			string[] pair = variablePair.Split ('=');
+			if (pair [0] == ""){ //end of variables
+				break;
+			}
 			if (pair.Length != 2) {
 				VsnDebug.Log("<color=red>ERROR: Invalid saved variables string: " + variablePair.ToString() + ". Expected \"varname=value\"</color>");
 			}

@@ -4,5 +4,7 @@ using UnityEngine;
 using System.Text.RegularExpressions;
 
 public abstract class VsnArgument{
+	public string stringValue;
+	public float floatValue;
 }
 
