@@ -25,8 +25,11 @@ namespace Command{
 		}
 
 		public override void InjectArguments (List<VsnArgument> args){
+			
 			this.messageString = args [0].stringValue;
-			Debug.Log ("Injecting argument: " + this.messageString);
+			VsnDebug.Log ("Injecting argument: " + this.messageString);
+
+
 		}
 
 	}

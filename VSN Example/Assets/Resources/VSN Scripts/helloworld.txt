@@ -1,3 +1,0 @@
-say "Hello, world"
-say "I'm another line"
-say "Rider-chan" "RIDER MODE!"

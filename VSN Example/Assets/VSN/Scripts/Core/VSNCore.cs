@@ -4,11 +4,14 @@ using UnityEngine;
 using System.Text.RegularExpressions;
 using System;
 using System.Reflection;
+using Command;
 
 public class VsnCore : MonoBehaviour {
 
 	public List<VsnSubSystem> subSystemList;
 	public List<Type> possibleCommandTypes;
+
+	[HideInInspector] public List<VsnWaypoint> waypoints;
 
 	void Awake(){
 		VsnDebug.Log ("VSN Core has " + subSystemList.Count + " subsystems loaded.");
@@ -19,11 +22,9 @@ public class VsnCore : MonoBehaviour {
 
 		possibleCommandTypes = GetClasses("Command");
 
-		VsnDebug.Log ("Analysing " + lines.GetLength (0) + " lines");
-
+		int commandNumber = 0;
 		foreach (string line in lines) {			
 			if (line == "\r") continue;
-			VsnDebug.Log ("Analysing line: " + line);
 
 			List<VsnArgument> vsnArguments = new List<VsnArgument>();
 
@@ -46,10 +47,18 @@ public class VsnCore : MonoBehaviour {
 
 			VsnCommand vsnCommand = InstantiateVsnCommand(commandName, vsnArguments);
 			if (vsnCommand != null){
+				if (commandName == "waypoint") {
+					RegisterWaypoint(new VsnWaypoint(vsnArguments[0].stringValue, commandNumber));
+				}
+
+				vsnCommand.commandNumber = commandNumber;
+				commandNumber++;
 				vsnCommandsFromScript.Add(vsnCommand);
+
+
 			}
 		}
-
+			
 		return vsnCommandsFromScript;
 	}
 
@@ -88,7 +97,7 @@ public class VsnCore : MonoBehaviour {
 	private VsnArgument ParseArgument(string arg){
 		
 		if (arg.StartsWith("\"") && arg.EndsWith("\"")){
-			return new VsnString(arg);
+			return new VsnString(arg.Substring(1, arg.Length-2));
 		}
 
 		if (StringIsDigitsOnly(arg)){
@@ -131,4 +140,25 @@ public class VsnCore : MonoBehaviour {
 
 		return typeList;
 	}
+
+	public void ResetWaypoints(){
+		waypoints = new List<VsnWaypoint> ();
+	}
+
+	public void RegisterWaypoint (VsnWaypoint vsnWaypoint){
+		if (waypoints.Contains (vsnWaypoint) == false) {
+			waypoints.Add (vsnWaypoint);
+		}
+	}
+
+	public VsnWaypoint GetWaypointFromLabel (string label){
+		foreach (VsnWaypoint waypoint in waypoints) {
+			if (waypoint.label == label) {
+				return waypoint;
+			}
+		}
+
+		return null;
+	}
+		
 }

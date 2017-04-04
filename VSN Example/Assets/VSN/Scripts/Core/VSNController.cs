@@ -17,6 +17,8 @@ public class VsnController : MonoBehaviour {
 	public VsnCore core;
 	public ExecutionState state;
 
+	public int currentCommandIndex = -1;
+
 
 	private List<VsnCommand> vsnCommands;
 
@@ -24,8 +26,8 @@ public class VsnController : MonoBehaviour {
 		instance = this;
 		state = ExecutionState.STARTING;
 
-		StartVSN ("VSN Scripts/helloworld");
-		VsnDebug.Log("Hello, world");
+		core.ResetWaypoints ();
+		StartVSN ("VSN Scripts/example2");
 		/*
 		VsnSave.SetVariable ("testvar", 18);
 		VsnSave.SetVariable ("characterName", "Fulano");
@@ -57,7 +59,6 @@ public class VsnController : MonoBehaviour {
 	/// </summary>
 	/// <param name="scriptPath">Script path from Resources root (e.g \"VSN Scripts/myscript.txt\"</param>
 	public void StartVSN(string scriptPath){
-		VsnDebug.Log ("VSN reading script, path: " + scriptPath);
 		StartVSNScript (scriptPath);
 	}
 
@@ -70,7 +71,7 @@ public class VsnController : MonoBehaviour {
 		foreach(VsnCommand vsnCommand in vsnCommands){
 			vsnCommand.PrintName();
 		}
-
+			
 		StartCoroutine (StartExecutingCommands ());
 
 
@@ -80,12 +81,12 @@ public class VsnController : MonoBehaviour {
 	IEnumerator StartExecutingCommands (){
 		state = ExecutionState.PLAYING;
 
-		for (int i = 0; i < vsnCommands.Count ; i++){
-			VsnCommand currentCommand = vsnCommands [i];
+		for (currentCommandIndex = 0; currentCommandIndex < vsnCommands.Count ; currentCommandIndex++){
+			VsnCommand currentCommand = vsnCommands [currentCommandIndex];
 			while (state != ExecutionState.PLAYING) {			
-				Debug.Log ("Waiting for next command...");	
 				yield return null;
 			}
+
 			currentCommand.Execute ();
 		}
 	}
