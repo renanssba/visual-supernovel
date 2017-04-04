@@ -1,18 +1,30 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
+public enum ExecutionState{
+	STARTING,
+	PLAYING,
+	WAITING,
+	WAITINGINPUT,
+	END,
+	NumberOfExecutionStates
+}
 public class VsnController : MonoBehaviour {
 
 	public static VsnController instance;
 	public VsnCore core;
+	public ExecutionState state;
+
 
 	private List<VsnCommand> vsnCommands;
 
 	void Awake(){
 		instance = this;
+		state = ExecutionState.STARTING;
 
-		//StartVSN ("VSN Scripts/helloworld");
+		StartVSN ("VSN Scripts/helloworld");
 		VsnDebug.Log("Hello, world");
 		/*
 		VsnSave.SetVariable ("testvar", 18);
@@ -21,6 +33,7 @@ public class VsnController : MonoBehaviour {
 		VsnSave.Save (1);
 		*/
 
+		/*
 		string currentMood = "";
 
 		VsnSaveSystem.GetStringVariable ("currentMood");
@@ -35,7 +48,7 @@ public class VsnController : MonoBehaviour {
 
 		currentMood = VsnSaveSystem.GetStringVariable ("currentMood");
 		VsnDebug.Log ("currentMood after loading wrong save slot: " + currentMood);
-
+		*/
 
 	}
 
@@ -56,6 +69,24 @@ public class VsnController : MonoBehaviour {
 
 		foreach(VsnCommand vsnCommand in vsnCommands){
 			vsnCommand.PrintName();
+		}
+
+		StartCoroutine (StartExecutingCommands ());
+
+
+
+	}
+
+	IEnumerator StartExecutingCommands (){
+		state = ExecutionState.PLAYING;
+
+		for (int i = 0; i < vsnCommands.Count ; i++){
+			VsnCommand currentCommand = vsnCommands [i];
+			while (state != ExecutionState.PLAYING) {			
+				Debug.Log ("Waiting for next command...");	
+				yield return null;
+			}
+			currentCommand.Execute ();
 		}
 	}
 }

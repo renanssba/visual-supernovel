@@ -1,11 +1,9 @@
 ﻿using System;
 
 public class VsnString : VsnArgument{
-
-	string value;
-
+	
 	public VsnString(string text){
-		this.value = text;
+		this.stringValue = text.Substring(1, text.Length-2); //remove quotes from argument
 	}
 
 }
