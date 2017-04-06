@@ -23,6 +23,8 @@ public class VsnUIManager : MonoBehaviour{
 
 	public GameObject vsnCharacterPrefab;
 
+	public bool isTextAppearing;
+
 	private List<VsnCharacter> characters;
 
 	void Awake(){
@@ -52,8 +54,15 @@ public class VsnUIManager : MonoBehaviour{
 
 	void OnScreenButtonClick (){
 		Debug.Log ("Clicked on screen!");
-		VsnController.instance.state = ExecutionState.PLAYING;
-		SetMessagePanel (false);
+		if (isTextAppearing) {
+			isTextAppearing = false;
+			vsnMessageText.GetComponent<TextConsoleSimulator> ().visibleCount = vsnMessageText.GetComponent<TextConsoleSimulator> ().totalCharacters;
+		} else {
+			if (VsnController.instance.state == ExecutionState.WAITINGINPUT) {
+				VsnController.instance.state = ExecutionState.PLAYING;
+				SetMessagePanel (false);
+			}
+		}
 	}
 
 	private void AddChoiceButtonListener (Button button, string label){

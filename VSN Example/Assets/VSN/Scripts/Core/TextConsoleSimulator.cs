@@ -6,6 +6,9 @@ public class TextConsoleSimulator : MonoBehaviour{
 	private TMP_Text m_TextComponent;
 	private bool hasTextChanged;
 
+	public int visibleCount;
+	public int totalCharacters;
+
 	void Awake (){
 		m_TextComponent = gameObject.GetComponent<TMP_Text> ();
 	}
@@ -31,13 +34,15 @@ public class TextConsoleSimulator : MonoBehaviour{
 	/// </summary>
 	/// <returns></returns>
 	public IEnumerator RevealCharacters (){
+		VsnUIManager.instance.isTextAppearing = true;
 		TMP_Text textComponent = m_TextComponent;			
 		textComponent.ForceMeshUpdate ();
 
 		TMP_TextInfo textInfo = textComponent.textInfo;
 
 		int totalVisibleCharacters = textInfo.characterCount; // Get # of Visible Character in text object
-		int visibleCount = 0;
+		visibleCount = 0;
+		totalCharacters = textInfo.characterCount;
 
 		while (true) {
 			if (hasTextChanged) {
@@ -46,6 +51,8 @@ public class TextConsoleSimulator : MonoBehaviour{
 			}
 
 			if (visibleCount > totalVisibleCharacters) {
+				VsnUIManager.instance.isTextAppearing = false;
+
 				break;
 				//yield return new WaitForSeconds(1.0f);
 				//visibleCount = 0;
