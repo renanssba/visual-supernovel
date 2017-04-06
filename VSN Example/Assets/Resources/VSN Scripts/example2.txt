@@ -1,4 +1,5 @@
 ﻿say "Creating an infinite loop was fun, but let's work with choices now."
+say "<color=#ff0000>Olá, teste de uma <b>certa</b> cor</color> e <b>agora <color=#ff0000>outro</b> teste</color>."
 say "I'll ask you a question and you'll have to answer it correctly, otherwise I'll keep asking it to you."
 say "What do you think about turtles?"
 waypoint "before_question"

@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Command;
-
+using TMPro;
+using TMPro.Examples;
 public class VsnUIManager : MonoBehaviour{
 
 	public static VsnUIManager instance;
 
 	public Image vsnMessagePanel;
-	public Text vsnMessageText;
+	public TextMeshProUGUI vsnMessageText;
 	public Button screenButton;
 	public Image choicesPanel;
 	public Button[] choicesButtons;
@@ -28,6 +29,7 @@ public class VsnUIManager : MonoBehaviour{
 
 	public void SetText(string msg){
 		vsnMessageText.text = msg;
+		StartCoroutine (vsnMessageText.GetComponent<TextConsoleSimulator>().RevealCharacters());
 	}
 
 	void OnScreenButtonClick (){

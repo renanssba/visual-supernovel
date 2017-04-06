@@ -25,9 +25,7 @@ public class VsnController : MonoBehaviour {
 	void Awake(){
 		instance = this;
 		state = ExecutionState.STARTING;
-
-		core.ResetWaypoints ();
-		StartVSN ("VSN Scripts/example2");
+		core.GetComponent<VsnCore>();
 		/*
 		VsnSave.SetVariable ("testvar", 18);
 		VsnSave.SetVariable ("characterName", "Fulano");
@@ -51,7 +49,11 @@ public class VsnController : MonoBehaviour {
 		currentMood = VsnSaveSystem.GetStringVariable ("currentMood");
 		VsnDebug.Log ("currentMood after loading wrong save slot: " + currentMood);
 		*/
+	}
 
+	void Start(){
+		core.ResetWaypoints ();
+		StartVSN ("VSN Scripts/example2");
 	}
 
 	/// <summary>
