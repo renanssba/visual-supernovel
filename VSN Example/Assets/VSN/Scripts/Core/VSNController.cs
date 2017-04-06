@@ -53,7 +53,7 @@ public class VsnController : MonoBehaviour {
 
 	void Start(){
 		core.ResetWaypoints ();
-		StartVSN ("VSN Scripts/example2");
+		StartVSN ("VSN Scripts/example3");
 	}
 
 	/// <summary>

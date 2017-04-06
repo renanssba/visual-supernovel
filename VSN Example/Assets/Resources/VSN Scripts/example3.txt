@@ -1,0 +1,7 @@
+﻿say "Hey, I'm gonna call a friend now."
+character "Backy" "backyardigansprite"
+say "What's up! My name is Backy..."
+move_x "Backy" 0.75
+say "I just moved!"
+move_x "Backy" 0.25
+say "Boooo!"

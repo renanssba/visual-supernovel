@@ -13,14 +13,19 @@ public class VsnUIManager : MonoBehaviour{
 	public TextMeshProUGUI vsnMessageText;
 	public Button screenButton;
 	public Image choicesPanel;
+	public Image charactersPanel;
 	public Button[] choicesButtons;
 	public Text[] choicesTexts;
+
+	public GameObject vsnCharacterPrefab;
+
+	private List<VsnCharacter> characters;
 
 	void Awake(){
 		instance = this;
 
 		screenButton.onClick.AddListener (OnScreenButtonClick);
-
+		characters = new List<VsnCharacter> ();
 	}
 
 	public void SetMessagePanel(bool value){
@@ -75,5 +80,55 @@ public class VsnUIManager : MonoBehaviour{
 			AddChoiceButtonListener (choicesButtons [i], labels [i]);
 		}
 	}
+
+	public void CreateNewCharacter (Sprite characterSprite, string characterFilename, string characterLabel){
+		GameObject vsnCharacterObject = Instantiate (vsnCharacterPrefab, charactersPanel.transform) as GameObject;
+		vsnCharacterObject.transform.localScale = Vector3.one;
+		VsnCharacter vsnCharacter = vsnCharacterObject.GetComponent<VsnCharacter> ();
+
+		Vector2 newPosition = new Vector2 (0f, 200f);
+		vsnCharacter.GetComponent<RectTransform> ().anchoredPosition = newPosition;
+
+		vsnCharacter.GetComponent<Image> ().sprite = characterSprite;
+		vsnCharacter.label = characterLabel;
+		vsnCharacter.characterFilename = characterFilename;
+
+		characters.Add (vsnCharacter);
+	}
+
+	public void MoveCharacterX(string characterLabel, float position){
+		float screenPosition = GetCharacterScreenPosition (position);
+		VsnCharacter character = FindCharacterByLabel (characterLabel);
+
+		Vector2 newPosition = new Vector2 (screenPosition, character.GetComponent<RectTransform> ().anchoredPosition.y);
+		character.GetComponent<RectTransform> ().anchoredPosition = newPosition;
+
+	}
+
+	private float GetCharacterScreenPosition(float normalizedPosition){
+		int maxPoint = 500;
+		int minPoint = -500;
+		int totalPoints = Mathf.Abs (maxPoint) + Mathf.Abs (minPoint);
+
+		if (normalizedPosition < 0f)
+			return minPoint;
+		else if (normalizedPosition > 1f)
+			return maxPoint;
+
+		float finalPositionX = normalizedPosition * totalPoints - totalPoints/2f;
+		VsnDebug.Log ("Normalized position: " + normalizedPosition + ", final position: " + finalPositionX);
+		return finalPositionX;
+	}
+
+	private VsnCharacter FindCharacterByLabel(string characterLabel){
+		foreach (VsnCharacter character in characters) {
+			if (character.label == characterLabel) {
+				return character;
+			}
+		}
+		return null;
+	}
+
+
 }
 
