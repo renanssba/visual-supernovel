@@ -5,12 +5,16 @@ using UnityEngine.UI;
 using Command;
 using TMPro;
 using TMPro.Examples;
+using DG.Tweening;
+
 public class VsnUIManager : MonoBehaviour{
 
 	public static VsnUIManager instance;
 
 	public Image vsnMessagePanel;
 	public TextMeshProUGUI vsnMessageText;
+	public TextMeshProUGUI vsnMessageTitle;
+	public Image vsnMessageTitlePanel;
 	public Button screenButton;
 	public Image choicesPanel;
 	public Image charactersPanel;
@@ -33,8 +37,17 @@ public class VsnUIManager : MonoBehaviour{
 	}
 
 	public void SetText(string msg){
+		if (string.IsNullOrEmpty(vsnMessageTitle.text)) {
+			vsnMessageTitlePanel.gameObject.SetActive (false);
+		} else {
+			vsnMessageTitlePanel.gameObject.SetActive (true);
+		}
 		vsnMessageText.text = msg;
 		StartCoroutine (vsnMessageText.GetComponent<TextConsoleSimulator>().RevealCharacters());
+	}
+
+	public void SetTextTitle (string messageTitle){
+		vsnMessageTitle.text = messageTitle;
 	}
 
 	void OnScreenButtonClick (){
@@ -96,27 +109,37 @@ public class VsnUIManager : MonoBehaviour{
 		characters.Add (vsnCharacter);
 	}
 
-	public void MoveCharacterX(string characterLabel, float position){
-		float screenPosition = GetCharacterScreenPosition (position);
+	public void MoveCharacterX(string characterLabel, float position, float duration){
+		float screenPosition = GetCharacterScreenPositionX (position);
 		VsnCharacter character = FindCharacterByLabel (characterLabel);
 
-		Vector2 newPosition = new Vector2 (screenPosition, character.GetComponent<RectTransform> ().anchoredPosition.y);
-		character.GetComponent<RectTransform> ().anchoredPosition = newPosition;
+		if (character != null) {
+			Vector2 newPosition = new Vector2 (screenPosition, character.GetComponent<RectTransform> ().anchoredPosition.y);
+			character.GetComponent<RectTransform> ().DOAnchorPos (newPosition, duration);
+		}
 
 	}
 
-	private float GetCharacterScreenPosition(float normalizedPosition){
+	public void SetCharacterAlpha(string characterLabel, float value, float duration){
+		VsnCharacter character = FindCharacterByLabel (characterLabel);
+
+		if (character != null) {
+			character.GetComponent<Image> ().DOFade (value, duration);
+		}
+	}
+
+	private float GetCharacterScreenPositionX(float normalizedPositionX){
 		int maxPoint = 500;
 		int minPoint = -500;
 		int totalPoints = Mathf.Abs (maxPoint) + Mathf.Abs (minPoint);
 
-		if (normalizedPosition < 0f)
+		if (normalizedPositionX < 0f)
 			return minPoint;
-		else if (normalizedPosition > 1f)
+		else if (normalizedPositionX > 1f)
 			return maxPoint;
 
-		float finalPositionX = normalizedPosition * totalPoints - totalPoints/2f;
-		VsnDebug.Log ("Normalized position: " + normalizedPosition + ", final position: " + finalPositionX);
+		float finalPositionX = normalizedPositionX * totalPoints - totalPoints/2f;
+		VsnDebug.Log ("Normalized position: " + normalizedPositionX + ", final position: " + finalPositionX);
 		return finalPositionX;
 	}
 
@@ -128,7 +151,19 @@ public class VsnUIManager : MonoBehaviour{
 		}
 		return null;
 	}
+		
+	public void FlipCharacterSprite(string characterLabel){
+		VsnCharacter character = FindCharacterByLabel (characterLabel);
+
+		Vector3 localScale = character.transform.localScale;
+		character.transform.localScale = new Vector3 (localScale.x * -1, localScale.y, localScale.z);
+	}
 
 
+	public void ResetAllCharacters (){
+		foreach (VsnCharacter character in characters) {
+			Destroy (character.gameObject);
+		}
+	}
 }
 

@@ -7,7 +7,10 @@ namespace Command{
 	[CommandAttribute(CommandString="say")]
 	public class SayCommand : VsnCommand {
 
-		string messageString;
+		string messageText;
+		string messageTitle;
+
+		private bool changeTitle;
 
 		public SayCommand(){
 			VsnDebug.Log("Created new SayCommand");
@@ -17,7 +20,13 @@ namespace Command{
 		public override void Execute (){
 			VsnUIManager.instance.SetMessagePanel (true);
 			VsnController.instance.state = ExecutionState.WAITINGINPUT;
-			VsnUIManager.instance.SetText (messageString);
+			if (changeTitle) {
+				VsnUIManager.instance.SetTextTitle (messageTitle);
+			}
+			VsnUIManager.instance.SetText (messageText);
+
+
+
 		}
 
 		public override void PrintName (){
@@ -25,10 +34,14 @@ namespace Command{
 		}
 
 		public override void InjectArguments (List<VsnArgument> args){
-			
-			this.messageString = args [0].stringValue;
-			VsnDebug.Log ("Injecting argument: " + this.messageString);
-
+			if (args.Count >= 2) {
+				this.messageTitle = args [0].stringValue;
+				this.messageText = args [1].stringValue;
+				changeTitle = true;
+			} else if (args.Count >= 1) {
+				this.messageText = args [0].stringValue;
+				changeTitle = false;
+			}
 
 		}
 
