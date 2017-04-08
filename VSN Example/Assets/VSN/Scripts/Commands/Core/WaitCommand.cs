@@ -20,8 +20,6 @@ namespace Command{
 		}
 
 
-		public override void PrintName (){
-		}
 
 		public override void InjectArguments (List<VsnArgument> args){
 			if (args.Count >= 1) {

@@ -1,16 +1,28 @@
 ﻿say "Hey, I'm gonna call a friend now."
 character "Backy" "backyardigansprite"
 say "Backy" "What's up! My name is Backy..."
-move_x "Backy" 0.75 0.3
+char_movex "Backy" 0.75 0.3
 say "I just moved! With a tween duration!"
-move_x "Backy" 0.25
+
+character "Chibi" "chibisprite"
+
+
+char_movex "Backy" 0.25
+
+flash 0.2
+
 say "Boooo! Instantly! I just didnt use the duration argument this time."
+char_movey "Chibi" 0.75
 char_alpha "Backy" 0 0.8
 say "Wow! I'm fading now!!!"
 wait 0.8
+
 say "And then...."
 wait 0.3
-move_x "Backy" 0.5
+
+char_movex "Backy" 0.5
+wait 0.1	
+char_movey "Backy" 0.5
 char_alpha "Backy" 1
 say "Boooooo!"
 char_flip "Backy" 
@@ -20,6 +32,9 @@ say "Flip! Flip, flip!"
 char_flip "Backy"
 say "Fliiiip!"
 char_flip "Backy"
+
 say "" "Okay, let's wrap things up."
 char_reset_all
 say "Bye bye, Backy!"
+
+load_scene "OtherScene"

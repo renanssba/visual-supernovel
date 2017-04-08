@@ -17,8 +17,6 @@ namespace Command{
 			VsnController.instance.core.RegisterWaypoint (new VsnWaypoint (label, commandNumber));
 		}
 
-		public override void PrintName (){
-		}
 
 		public override void InjectArguments (List<VsnArgument> args){
 			this.label = args [0].stringValue;

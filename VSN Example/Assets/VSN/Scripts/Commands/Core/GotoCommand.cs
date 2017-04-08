@@ -9,9 +9,6 @@ namespace Command{
 
 		string label;
 
-
-
-
 		public override void Execute (){
 			VsnWaypoint waypoint = VsnController.instance.core.GetWaypointFromLabel (this.label);
 
@@ -22,8 +19,7 @@ namespace Command{
 			}
 		}
 
-		public override void PrintName (){
-		}
+
 
 		public override void InjectArguments (List<VsnArgument> args){
 			this.label = args [0].stringValue;

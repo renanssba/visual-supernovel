@@ -1,0 +1,17 @@
+﻿character "Chibi" "chibisprite"
+
+char_alpha "Chibi" 0
+
+wait 0.2
+
+char_alpha "Chibi" 1 0.5
+
+char_movex "Chibi" 0.75
+char_movex "Chibi" 0.5 0.5
+
+wait 0.75
+say "Chibi" "Hello, player. This was a nice transition, wasn't it?"
+wait 0.25
+
+char_alpha "Chibi" 0 0.5
+char_movex "Chibi" 0.25 0.5
