@@ -1,0 +1,6 @@
+﻿debug_var testvar
+say "Hello."
+set_var testvar 5
+say "Testvar is now 5"
+save
+say "Game was saved! Reload and check the console. Don't foget to load the game before calling this script."

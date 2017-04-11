@@ -4,15 +4,17 @@ using UnityEngine;
 
 namespace Command{
 
-	[CommandAttribute(CommandString="set_var")]
-	public class SetVariableCommand : VsnCommand {
+	[CommandAttribute(CommandString="add_var")]
+	public class AddVariableCommand : VsnCommand {
 
 		string variableName;
 		float numberValue;
-		//string variableReference;
 
 		public override void Execute (){
-			VsnSaveSystem.SetVariable(variableName, numberValue);
+			float oldValue = VsnSaveSystem.GetNumberVariable(variableName);
+			float newValue = oldValue + numberValue;
+
+			VsnSaveSystem.SetVariable(variableName, newValue);
 		}
 
 
@@ -20,7 +22,7 @@ namespace Command{
 			if (args.Count >= 2){
 				this.variableName = args[0].variableReferenceValue;
 				this.numberValue = args[1].floatValue;
-			}
+			} 
 		}
 
 	}

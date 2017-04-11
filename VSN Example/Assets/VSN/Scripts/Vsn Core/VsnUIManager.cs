@@ -18,6 +18,7 @@ public class VsnUIManager : MonoBehaviour{
 	public Button screenButton;
 	public Image choicesPanel;
 	public Image charactersPanel;
+	public Image backgroundImage;
 	public Button[] choicesButtons;
 	public Text[] choicesTexts;
 
@@ -200,6 +201,15 @@ public class VsnUIManager : MonoBehaviour{
 		foreach (VsnCharacter character in characters) {
 			Destroy (character.gameObject);
 		}
+	}
+
+	public void SetBackground (Sprite backgroundSprite){
+		backgroundImage.sprite = backgroundSprite;
+		backgroundImage.gameObject.SetActive(true);
+	}
+
+	public void ResetBackground(){
+		backgroundImage.gameObject.SetActive(false);
 	}
 }
 

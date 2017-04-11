@@ -15,6 +15,8 @@ public class ExampleEntryPoint : MonoBehaviour {
 		// "example3": characters, alpha, move, say with text
 		// "example4": example of transition with movex and wait with a character
 
+		VsnSaveSystem.Load(0);
+
 		VsnController.instance.StartVSN("VSN Scripts/example1");
 	}
 

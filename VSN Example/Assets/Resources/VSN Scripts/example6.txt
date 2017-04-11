@@ -1,0 +1,16 @@
+﻿character "Backy" "backyardigansprite"
+bg "samplebg"
+
+say "Backy" "Hello again, my friend!"
+say "I'm gonna shake the screen!"
+shake 0.2 0.4
+say "Wooooo!"
+say "Fading out..."
+
+fade_out 1
+wait 2
+
+fade_in 1
+wait 0.5
+
+say "Fading in!"
