@@ -17,7 +17,7 @@ public class ExampleEntryPoint : MonoBehaviour {
 
 		VsnSaveSystem.Load(0);
 
-		VsnController.instance.StartVSN("VSN Scripts/example1");
+		VsnController.instance.StartVSN("VSN Scripts/example6");
 	}
 
 }

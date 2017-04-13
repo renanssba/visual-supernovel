@@ -10,8 +10,9 @@ namespace Command{
 		string sfxName;
 
 		public override void Execute (){
-			// Grab audioclip for audio manager instead of just a string
-			VsnAudioManager.instance.PlaySfx(sfxName);
+			
+			AudioClip audioClip = Resources.Load<AudioClip>("SFX/" + sfxName);
+			VsnAudioManager.instance.PlaySfx(audioClip);
 		}
 
 

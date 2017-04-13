@@ -2,6 +2,12 @@
 bg "samplebg"
 
 say "Backy" "Hello again, my friend!"
+wait 0.5
+
+play_sfx "smsalert"
+
+wait 0.5
+say "Did you hear that?"
 say "I'm gonna shake the screen!"
 shake 0.2 0.4
 say "Wooooo!"

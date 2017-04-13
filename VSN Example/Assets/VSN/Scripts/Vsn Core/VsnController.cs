@@ -19,7 +19,6 @@ public class VsnController : MonoBehaviour {
 
 	public int currentCommandIndex = -1;
 
-
 	private List<VsnCommand> vsnCommands;
 
 	void Awake(){
@@ -29,34 +28,8 @@ public class VsnController : MonoBehaviour {
 		state = ExecutionState.STARTING;
 		core.GetComponent<VsnCore>();
 		core.ResetWaypoints ();
-		/*
-		VsnSave.SetVariable ("testvar", 18);
-		VsnSave.SetVariable ("characterName", "Fulano");
-		VsnSave.SetVariable ("currentMood", "ILIKETURTLES");
-		VsnSave.Save (1);
-		*/
-
-		/*
-		string currentMood = "";
-
-		VsnSaveSystem.GetStringVariable ("currentMood");
-		VsnDebug.Log ("currentMood before load: " + currentMood);
-
-		VsnSaveSystem.Load (1);
-
-		currentMood = VsnSaveSystem.GetStringVariable ("currentMood");
-		VsnDebug.Log ("currentMood after load: " + currentMood);
-
-		VsnSaveSystem.Load (2);
-
-		currentMood = VsnSaveSystem.GetStringVariable ("currentMood");
-		VsnDebug.Log ("currentMood after loading wrong save slot: " + currentMood);
-		*/
 	}
 
-	void Start(){
-		
-	}
 
 	/// <summary>
 	/// Starts VSN with a given script path, starting from Resources root.
