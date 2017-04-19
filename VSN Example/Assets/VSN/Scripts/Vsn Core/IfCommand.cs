@@ -30,7 +30,7 @@ namespace Command{
 			}
 
 			if (conditionSatisfied == false){
-				
+				List<VsnCommand> commands = VsnController.instance.vsnCommands;
 			}
 
 		}

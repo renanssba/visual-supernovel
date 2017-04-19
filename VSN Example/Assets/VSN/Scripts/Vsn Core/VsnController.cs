@@ -19,7 +19,7 @@ public class VsnController : MonoBehaviour {
 
 	public int currentCommandIndex = -1;
 
-	private List<VsnCommand> vsnCommands;
+	public List<VsnCommand> vsnCommands;
 
 	void Awake(){
 		if (instance == null){
