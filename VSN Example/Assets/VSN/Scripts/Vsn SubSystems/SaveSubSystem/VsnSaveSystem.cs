@@ -68,6 +68,7 @@ public class VsnSaveSystem{
 	#region Variables (sets, adds, gets)
 
 	public static void SetVariable(string key, float value, bool isGlobal = false){
+		VsnDebug.Log ("Variable " + key + " saved with value " + value);
 		string savedKey = GetVariableFloatPrefix(key, isGlobal);
 
 		if (savedDataDictionary.ContainsKey(savedKey)){
@@ -78,6 +79,7 @@ public class VsnSaveSystem{
 	}
 
 	public static void SetVariable(string key, string value, bool isGlobal = false){
+		VsnDebug.Log ("Variable " + key + " saved with value " + value);
 		string savedKey = GetVariableStringPrefix(key, isGlobal);
 
 		if (savedDataDictionary.ContainsKey(savedKey)){

@@ -14,7 +14,7 @@ namespace Command{
 
 
 		public override void Execute (){
-			VsnController.instance.core.RegisterWaypoint (new VsnWaypoint (label, commandNumber));
+			VsnController.instance.core.RegisterWaypoint (new VsnWaypoint (label, commandIndex));
 		}
 
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Command;
 using UnityEngine.UI;
 
 public enum ExecutionState{
@@ -60,5 +61,35 @@ public class VsnController : MonoBehaviour {
 
 			currentCommand.Execute ();
 		}
+	}
+
+	public int FindNextElseOrEndifCommand(){
+		List<VsnCommand> commands = VsnController.instance.vsnCommands;
+
+		int index = this.currentCommandIndex+1;
+
+		int nestedIfCommandsFound = 0;
+
+		for (int i = index; i < commands.Count; i++) {
+
+			VsnCommand command = commands [i];
+
+			if (command.GetType () == typeof(IfCommand)) {
+				nestedIfCommandsFound += 1;
+			} else if (command.GetType () == typeof(EndIfCommand)) {
+				if (nestedIfCommandsFound == 0) {
+					return command.commandIndex;
+				} else {
+					nestedIfCommandsFound -= 1;
+				}
+			} else if (command.GetType () == typeof(ElseCommand)) {
+				if (nestedIfCommandsFound == 0) {
+					return command.commandIndex;
+				}
+			}
+
+		}
+
+		return -1;
 	}
 }

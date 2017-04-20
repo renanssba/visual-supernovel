@@ -23,8 +23,11 @@ public class VsnCore : MonoBehaviour {
 		possibleCommandTypes = GetClasses("Command");
 
 		int commandNumber = 0;
-		foreach (string line in lines) {			
-			if (line == "\r") continue;
+		foreach (string raw_line in lines) {			
+			if (raw_line == "\r") continue;
+
+			string line = raw_line.TrimStart ();
+
 
 			List<VsnArgument> vsnArguments = new List<VsnArgument>();
 
@@ -51,7 +54,7 @@ public class VsnCore : MonoBehaviour {
 					RegisterWaypoint(new VsnWaypoint(vsnArguments[0].stringValue, commandNumber));
 				}
 
-				vsnCommand.commandNumber = commandNumber;
+				vsnCommand.commandIndex = commandNumber;
 				commandNumber++;
 				vsnCommandsFromScript.Add(vsnCommand);
 

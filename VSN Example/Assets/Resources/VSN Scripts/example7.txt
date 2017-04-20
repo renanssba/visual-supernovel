@@ -1,1 +1,20 @@
-﻿
+﻿say "Hey, I'll try something.. I'll try checking if x = 1"
+set_var x 1
+
+if x == 1
+	say "It is"
+	if x == 1
+		say "Dude, it really is"
+	endif
+
+	say "So it really is 1. I'm leaving now!"
+else
+	say "It's not"
+	if x == 1
+		say "Wait.. if you're reading this, something is very wrong"
+	else
+		say "It's incredible how much x is NOT 1"
+	endif
+
+	say "Well, since x is not 1, I'm leaving!"
+endif

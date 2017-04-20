@@ -1,9 +1,19 @@
-﻿using System;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-namespace AssemblyCSharp{
-	public class EndIfCommand{
-		public EndIfCommand (){
+namespace Command{
+
+	[CommandAttribute(CommandString="endif")]
+	public class EndIfCommand : VsnCommand {
+
+		public override void Execute (){
+
 		}
+
+		public override void InjectArguments (List<VsnArgument> args){
+
+		}
+
 	}
 }
-
