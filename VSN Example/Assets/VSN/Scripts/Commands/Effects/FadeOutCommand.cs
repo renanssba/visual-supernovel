@@ -2,26 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Command{
+namespace Command {
 
-	[CommandAttribute(CommandString="fade_out")]
-	public class FadeOutCommand : VsnCommand {
+  [CommandAttribute(CommandString = "fade_out")]
+  public class FadeOutCommand : VsnCommand {
 
-		float duration;
+    float duration;
 
-		public override void Execute (){
-			VsnEffectManager.instance.FadeOut(duration);
-		}
+    public override void Execute() {
+      VsnEffectManager.instance.FadeOut(duration);
+    }
 
+    public override void InjectArguments(List<VsnArgument> args) {
+      if(args.Count >= 1) {
+        this.duration = args[0].floatValue;
+      } else {
+        this.duration = 0.5f; //default
+      }
+    }
 
-
-		public override void InjectArguments (List<VsnArgument> args){
-			if (args.Count >= 1){
-				this.duration = args [0].floatValue;
-			} else{
-				this.duration = 0.5f; //default
-			}
-		}
-
-	}
+  }
 }

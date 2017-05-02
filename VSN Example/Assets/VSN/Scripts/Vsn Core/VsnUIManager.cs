@@ -7,209 +7,225 @@ using TMPro;
 using TMPro.Examples;
 using DG.Tweening;
 
-public class VsnUIManager : MonoBehaviour{
+public class VsnUIManager : MonoBehaviour {
 
-	public static VsnUIManager instance;
+  public static VsnUIManager instance;
 
-	public Image vsnMessagePanel;
-	public TextMeshProUGUI vsnMessageText;
-	public TextMeshProUGUI vsnMessageTitle;
-	public Image vsnMessageTitlePanel;
-	public Button screenButton;
-	public Image choicesPanel;
-	public Image charactersPanel;
-	public Image backgroundImage;
-	public Button[] choicesButtons;
-	public Text[] choicesTexts;
+  public GameObject vsnMessagePanel;
+  public TextMeshProUGUI vsnMessageText;
+  public TextMeshProUGUI vsnMessageTitle;
+  public Image vsnMessageTitlePanel;
+  public Button screenButton;
+  public Image choicesPanel;
+  public RectTransform charactersPanel;
+  public Image backgroundImage;
+  public Button[] choicesButtons;
+  public Text[] choicesTexts;
 
-	public GameObject vsnCharacterPrefab;
+  public GameObject vsnCharacterPrefab;
 
-	public bool isTextAppearing;
+  public bool isTextAppearing;
 
-	private List<VsnCharacter> characters;
+  public int charsToShowPerSecond = 30;
 
-	void Awake(){
-		if (instance == null){
-			instance = this;
-		}
+  private List<VsnCharacter> characters;
 
-		screenButton.onClick.AddListener (OnScreenButtonClick);
-		characters = new List<VsnCharacter> ();
-	}
+  void Awake() {
+    if(instance == null) {
+      instance = this;
+    }
 
-	public void SetMessagePanel(bool value){
-		vsnMessagePanel.gameObject.SetActive (value);
-	}
+    screenButton.onClick.AddListener(OnScreenButtonClick);
+    characters = new List<VsnCharacter>();
+  }
 
-	public void SetText(string msg){
-		if (string.IsNullOrEmpty(vsnMessageTitle.text)) {
-			vsnMessageTitlePanel.gameObject.SetActive (false);
-		} else {
-			vsnMessageTitlePanel.gameObject.SetActive (true);
-		}
-		vsnMessageText.text = msg;
-		StartCoroutine (vsnMessageText.GetComponent<TextConsoleSimulator>().RevealCharacters());
-	}
+  public void SetMessagePanel(bool value) {
+    vsnMessagePanel.SetActive(value);
+  }
 
-	public void SetTextTitle (string messageTitle){
-		vsnMessageTitle.text = messageTitle;
-	}
+  public void SetText(string msg) {
+    if(string.IsNullOrEmpty(vsnMessageTitle.text)) {
+      vsnMessageTitlePanel.gameObject.SetActive(false);
+    } else {
+      vsnMessageTitlePanel.gameObject.SetActive(true);
+    }
+    vsnMessageText.text = msg;
+    vsnMessageText.GetComponent<TextConsoleSimulator>().StartShowingCharacters();
+  }
 
-	void OnScreenButtonClick (){
-		Debug.Log ("Clicked on screen!");
-		if (isTextAppearing) {
-			isTextAppearing = false;
-			vsnMessageText.GetComponent<TextConsoleSimulator> ().visibleCount = vsnMessageText.GetComponent<TextConsoleSimulator> ().totalCharacters;
-		} else {
-			if (VsnController.instance.state == ExecutionState.WAITINGINPUT) {
-				VsnController.instance.state = ExecutionState.PLAYING;
-				SetMessagePanel (false);
-			}
-		}
-	}
+  public void SetTextTitle(string messageTitle) {
+    vsnMessageTitle.text = messageTitle;
+  }
 
-	private void AddChoiceButtonListener (Button button, string label){
-		button.onClick.AddListener (() => {
-			VsnCommand command = new GotoCommand();
-			List<VsnArgument> arguments = new List<VsnArgument>();
-			arguments.Add(new VsnString(label));
+  void OnScreenButtonClick() {
+    if(isTextAppearing) {
+      isTextAppearing = false;
+      vsnMessageText.GetComponent<TextConsoleSimulator>().FinishShowingCharacters();
+    } else {
+      if(VsnController.instance.state == ExecutionState.WAITINGINPUT) {
+        VsnController.instance.state = ExecutionState.PLAYING;
+        SetMessagePanel(false);
+      }
+    }
+  }
 
-			command.InjectArguments(arguments);
-			SetChoicesPanel(false, 0);
-			command.Execute();
-			VsnController.instance.state = ExecutionState.PLAYING;
-		});
-	}
+  private void AddChoiceButtonListener(Button button, string label) {
+    button.onClick.AddListener(() => {
+      VsnCommand command = new GotoCommand();
+      List<VsnArgument> arguments = new List<VsnArgument>();
+      arguments.Add(new VsnString(label));
 
-	public void SetChoicesPanel (bool enable, int numberOfChoices){
-		choicesPanel.gameObject.SetActive (enable);
+      command.InjectArguments(arguments);
+      SetChoicesPanel(false, 0);
+      command.Execute();
+      VsnController.instance.state = ExecutionState.PLAYING;
+    });
+  }
 
-		if (enable) {
-			for (int i = 0; i < choicesButtons.Length; i++) {
-				bool willSetActive = (i < numberOfChoices);
-				choicesButtons [i].gameObject.SetActive (willSetActive);
-			}
-		}
-	}
+  public void SetChoicesPanel(bool enable, int numberOfChoices) {
+    choicesPanel.gameObject.SetActive(enable);
 
-	public void SetChoicesTexts (string[] choices){
-		for (int i = 0; i < choices.Length; i++) {
-			if (choicesTexts [i].gameObject.activeInHierarchy) {
-				choicesTexts [i].text = choices [i];
-			}
-		}
-	}
+    if(enable) {
+      for(int i = 0; i < choicesButtons.Length; i++) {
+        bool willSetActive = (i < numberOfChoices);
+        choicesButtons[i].gameObject.SetActive(willSetActive);
+      }
+    }
+  }
 
-	public void SetChoicesLabels (string[] labels){
-		for (int i = 0 ; i < labels.Length ; i++){
-			AddChoiceButtonListener (choicesButtons [i], labels [i]);
-		}
-	}
+  public void SetChoicesTexts(string[] choices) {
+    for(int i = 0; i < choices.Length; i++) {
+      if(choicesTexts[i].gameObject.activeInHierarchy) {
+        choicesTexts[i].text = choices[i];
+      }
+    }
+  }
 
-	public void CreateNewCharacter (Sprite characterSprite, string characterFilename, string characterLabel){
-		GameObject vsnCharacterObject = Instantiate (vsnCharacterPrefab, charactersPanel.transform) as GameObject;
-		vsnCharacterObject.transform.localScale = Vector3.one;
-		VsnCharacter vsnCharacter = vsnCharacterObject.GetComponent<VsnCharacter> ();
+  public void SetChoicesLabels(string[] labels) {
+    for(int i = 0; i < labels.Length; i++) {
+      AddChoiceButtonListener(choicesButtons[i], labels[i]);
+    }
+  }
 
-		Vector2 newPosition = new Vector2 (0f, 200f);
-		vsnCharacter.GetComponent<RectTransform> ().anchoredPosition = newPosition;
+  public void CreateNewCharacter(Sprite characterSprite, string characterFilename, string characterLabel) {
+    GameObject vsnCharacterObject = Instantiate(vsnCharacterPrefab, charactersPanel.transform) as GameObject;
+    vsnCharacterObject.transform.localScale = Vector3.one;
+    VsnCharacter vsnCharacter = vsnCharacterObject.GetComponent<VsnCharacter>();
 
-		vsnCharacter.GetComponent<Image> ().sprite = characterSprite;
-		vsnCharacter.label = characterLabel;
-		vsnCharacter.characterFilename = characterFilename;
+    Vector2 newPosition = Vector2.zero;
+    vsnCharacter.GetComponent<RectTransform>().anchoredPosition = newPosition;
 
-		characters.Add (vsnCharacter);
-	}
+    vsnCharacter.GetComponent<Image>().sprite = characterSprite;
+    vsnCharacter.label = characterLabel;
+    vsnCharacter.characterFilename = characterFilename;
 
-	public void MoveCharacterX(string characterLabel, float position, float duration){
-		float screenPosition = GetCharacterScreenPositionX (position);
-		VsnCharacter character = FindCharacterByLabel (characterLabel);
+    characters.Add(vsnCharacter);
+  }
 
-		if (character != null) {
-			Vector2 newPosition = new Vector2 (screenPosition, character.GetComponent<RectTransform> ().anchoredPosition.y);
-			character.GetComponent<RectTransform> ().DOAnchorPos (newPosition, duration);
-		}
+  public void MoveCharacterX(string characterLabel, float position, float duration) {
+    float screenPosition = GetCharacterScreenPositionX(position);
+    VsnCharacter character = FindCharacterByLabel(characterLabel);
 
-	}
+    if(character != null) {
+      Vector2 newPosition = new Vector2(screenPosition, character.GetComponent<RectTransform>().anchoredPosition.y);
+      if(duration != 0) {
+        character.GetComponent<RectTransform>().DOAnchorPos(newPosition, duration);
+      } else {
+        character.GetComponent<RectTransform>().anchoredPosition = newPosition;
+      }
+    }
+  }
 
-	public void MoveCharacterY(string characterLabel, float position, float duration){
-		float screenPosition = GetCharacterScreenPositionY (position);
-		VsnCharacter character = FindCharacterByLabel (characterLabel);
+  public void MoveCharacterY(string characterLabel, float position, float duration) {
+    float screenPosition = GetCharacterScreenPositionY(position);
+    VsnCharacter character = FindCharacterByLabel(characterLabel);
 
-		if (character != null) {
-			Vector2 newPosition = new Vector2 (character.GetComponent<RectTransform> ().anchoredPosition.x, screenPosition);
-			character.GetComponent<RectTransform> ().DOAnchorPos (newPosition, duration);
-		}
+    if(character != null) {
+      Vector2 newPosition = new Vector2(character.GetComponent<RectTransform>().anchoredPosition.x, screenPosition);
+      if(duration != 0) {
+        character.GetComponent<RectTransform>().DOAnchorPos(newPosition, duration);
+      } else {
+        character.GetComponent<RectTransform>().anchoredPosition = newPosition;
+      }
+    }
 
-	}
+  }
 
-	public void SetCharacterAlpha(string characterLabel, float value, float duration){
-		VsnCharacter character = FindCharacterByLabel (characterLabel);
+  public void SetCharacterAlpha(string characterLabel, float alphaValue, float duration) {
+    VsnCharacter character = FindCharacterByLabel(characterLabel);
 
-		if (character != null) {
-			character.GetComponent<Image> ().DOFade (value, duration);
-		}
-	}
+    if(character != null) {
+      Image characterImage = character.GetComponent<Image>();
+      if(duration != 0) {
+        characterImage.DOFade(alphaValue, duration);
+      } else {
+        characterImage.color = new Color(characterImage.color.r,
+                                         characterImage.color.g,
+                                         characterImage.color.b, alphaValue);
+      }
+    }
+  }
 
-	private float GetCharacterScreenPositionX(float normalizedPositionX){
-		int maxPoint = 500;
-		int minPoint = -500;
-		int totalPoints = Mathf.Abs (maxPoint) + Mathf.Abs (minPoint);
+  private float GetCharacterScreenPositionX(float normalizedPositionX) {
+    float zeroPoint = -charactersPanel.rect.width/2f;
+    float onePoint = charactersPanel.rect.width/2f;
+    float totalSize = onePoint - zeroPoint;
 
-		if (normalizedPositionX < 0f)
-			return minPoint;
-		else if (normalizedPositionX > 1f)
-			return maxPoint;
+//    if(normalizedPositionX < 0f)
+//      return zeroPoint;
+//    else if(normalizedPositionX > 1f)
+//      return onePoint;
 
-		float finalPositionX = normalizedPositionX * totalPoints - Mathf.Abs(minPoint);
-		return finalPositionX;
-	}
+    float finalPositionX = zeroPoint + normalizedPositionX * totalSize;
+    return finalPositionX;
+  }
 
-	private float GetCharacterScreenPositionY(float normalizedPositionY){
-		int maxPoint = 500;
-		int minPoint = 200;
-		int totalPoints = Mathf.Abs (maxPoint) + Mathf.Abs (minPoint);
+  private float GetCharacterScreenPositionY(float normalizedPositionY) {
+    int maxPoint = 500;
+    int minPoint = 200;
+    int totalPoints = Mathf.Abs(maxPoint) + Mathf.Abs(minPoint);
 
-		if (normalizedPositionY < 0f)
-			return minPoint;
-		else if (normalizedPositionY > 1f)
-			return maxPoint;
+    if(normalizedPositionY < 0f)
+      return minPoint;
+    else if(normalizedPositionY > 1f)
+      return maxPoint;
 
-		float finalPositionY = normalizedPositionY * totalPoints;
-		Debug.Log("Final Y: " + finalPositionY);
-		return finalPositionY;
-	}
+    float finalPositionY = normalizedPositionY * totalPoints;
+    Debug.Log("Final Y: " + finalPositionY);
+    return finalPositionY;
+  }
 
-	private VsnCharacter FindCharacterByLabel(string characterLabel){
-		foreach (VsnCharacter character in characters) {
-			if (character.label == characterLabel) {
-				return character;
-			}
-		}
-		return null;
-	}
-		
-	public void FlipCharacterSprite(string characterLabel){
-		VsnCharacter character = FindCharacterByLabel (characterLabel);
+  private VsnCharacter FindCharacterByLabel(string characterLabel) {
+    foreach(VsnCharacter character in characters) {
+      if(character.label == characterLabel) {
+        return character;
+      }
+    }
+    return null;
+  }
 
-		Vector3 localScale = character.transform.localScale;
-		character.transform.localScale = new Vector3 (localScale.x * -1, localScale.y, localScale.z);
-	}
+  public void FlipCharacterSprite(string characterLabel) {
+    VsnCharacter character = FindCharacterByLabel(characterLabel);
+
+    Vector3 localScale = character.transform.localScale;
+    character.transform.localScale = new Vector3(localScale.x * -1, localScale.y, localScale.z);
+  }
 
 
-	public void ResetAllCharacters (){
-		foreach (VsnCharacter character in characters) {
-			Destroy (character.gameObject);
-		}
-	}
+  public void ResetAllCharacters() {
+    foreach(VsnCharacter character in characters) {
+      Destroy(character.gameObject);
+    }
+    characters.Clear();
+  }
 
-	public void SetBackground (Sprite backgroundSprite){
-		backgroundImage.sprite = backgroundSprite;
-		backgroundImage.gameObject.SetActive(true);
-	}
+  public void SetBackground(Sprite backgroundSprite) {
+    backgroundImage.sprite = backgroundSprite;
+    backgroundImage.gameObject.SetActive(true);
+  }
 
-	public void ResetBackground(){
-		backgroundImage.gameObject.SetActive(false);
-	}
+  public void ResetBackground() {
+    backgroundImage.gameObject.SetActive(false);
+  }
 }
 

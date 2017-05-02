@@ -11,7 +11,7 @@ namespace Command{
 
 		public override void Execute (){
 			
-			float value = VsnSaveSystem.GetNumberVariable(shakeIntensity);
+			float value = VsnSaveSystem.GetFloatVariable(shakeIntensity);
 
 			Debug.Log("Variable " + shakeIntensity + ": " + value);
 		}

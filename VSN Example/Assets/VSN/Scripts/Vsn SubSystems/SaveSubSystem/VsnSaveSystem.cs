@@ -67,7 +67,11 @@ public class VsnSaveSystem{
 
 	#region Variables (sets, adds, gets)
 
-	public static void SetVariable(string key, float value, bool isGlobal = false){
+  public static void SetVariable(string key, int value, bool isGlobal = false){
+    SetVariable(key, (float)value, isGlobal);
+  }
+
+  public static void SetVariable(string key, float value, bool isGlobal = false){
 		VsnDebug.Log ("Variable " + key + " saved with value " + value);
 		string savedKey = GetVariableFloatPrefix(key, isGlobal);
 
@@ -101,10 +105,14 @@ public class VsnSaveSystem{
 		} else{
 			savedDataDictionary.Add(savedKey, amount.ToString());
 		}
-	}	
+	}
 
-	public static float GetNumberVariable(string key, bool isGlobal = false){
-		string savedKey = GetVariableFloatPrefix(key, isGlobal);
+  public static int GetIntVariable(string key, int defaultValue = 0){
+    return (int)GetFloatVariable(key, (float)defaultValue);
+  }
+
+  public static float GetFloatVariable(string key, float defaultValue = 0f){
+    string savedKey = GetVariableFloatPrefix(key, false);
 
 		if (savedDataDictionary.ContainsKey(savedKey)){
 			float currentValue;
@@ -113,17 +121,17 @@ public class VsnSaveSystem{
 			}
 		}
 
-		return 0f;
+    return defaultValue;
 	}
 
-	public static string GetStringVariable(string key, bool isGlobal = false){
-		string savedKey = GetVariableStringPrefix(key, isGlobal);
+  public static string GetStringVariable(string key, string defaultValue = ""){
+    string savedKey = GetVariableStringPrefix(key, false);
 
 		if (savedDataDictionary.ContainsKey(savedKey)){
 			return savedDataDictionary[savedKey];
 		}
 
-		return "";
+    return defaultValue;
 	}
 
 	#endregion

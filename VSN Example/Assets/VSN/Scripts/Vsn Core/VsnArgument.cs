@@ -9,6 +9,5 @@ public abstract class VsnArgument{
 	public float floatValue;
 	public string variableReferenceValue;
 
-
 }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Command{
 
-	[CommandAttribute(CommandString="char_movey")]
+	[CommandAttribute(CommandString="char_move_y")]
 	public class CharMoveYCommand : VsnCommand {
 
 		string characterLabel;

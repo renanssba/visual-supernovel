@@ -6,8 +6,7 @@ public class VsnDebug{
 
 	public static void Log(string msg){
 		if (Application.isEditor) {
-			Debug.Log (msg);	
+//			Debug.Log(msg);	
 		}
 	}
-
 }

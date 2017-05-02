@@ -11,8 +11,11 @@ namespace Command{
 
 		public override void Execute (){
 			Sprite backgroundSprite = Resources.Load<Sprite>("Backgrounds/" + backgroundFilename);
+      if(backgroundSprite == null){
+        Debug.LogError("Error loading " + backgroundFilename + " character sprite. Please check its path");
+        return;
+      }
 			VsnUIManager.instance.SetBackground(backgroundSprite);
-
 		}
 
 		public override void InjectArguments (List<VsnArgument> args){

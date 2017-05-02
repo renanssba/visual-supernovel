@@ -2,28 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Command{
+namespace Command {
 
-	[CommandAttribute(CommandString="save")]
-	public class SaveCommand : VsnCommand {
+  [CommandAttribute(CommandString = "save")]
+  public class SaveCommand : VsnCommand {
 
-		float saveSlot;
+    float saveSlot;
 
-		public override void Execute (){
-			int intSlot = int.Parse(saveSlot.ToString());
+    public override void Execute() {
+      int intSlot = int.Parse(saveSlot.ToString());
 
-			VsnSaveSystem.Save(intSlot);
-		}
+      VsnSaveSystem.Save(intSlot);
+    }
 
 
-		public override void InjectArguments (List<VsnArgument> args){
-			if (args.Count >= 1){
-				this.saveSlot = args[0].floatValue;
-			}
-			else{
-				this.saveSlot = 0;
-			}
-		}
+    public override void InjectArguments(List<VsnArgument> args) {
+      if(args.Count >= 1) {
+        saveSlot = args[0].floatValue;
+      } else {
+        saveSlot = 0;
+      }
+    }
 
-	}
+  }
 }

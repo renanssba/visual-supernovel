@@ -11,7 +11,7 @@ namespace Command{
 		float numberValue;
 
 		public override void Execute (){
-			float oldValue = VsnSaveSystem.GetNumberVariable(variableName);
+			float oldValue = VsnSaveSystem.GetFloatVariable(variableName);
 			float newValue = oldValue + numberValue;
 
 			VsnSaveSystem.SetVariable(variableName, newValue);

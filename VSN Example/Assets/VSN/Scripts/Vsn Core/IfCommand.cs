@@ -23,7 +23,7 @@ namespace Command{
 				}
 			} else{
 				// is comparing to a number
-				float variableValue = VsnSaveSystem.GetNumberVariable(variableName);
+				float variableValue = VsnSaveSystem.GetFloatVariable(variableName);
 				if (comparedNumber == variableValue){
 					conditionSatisfied = true;
 				}

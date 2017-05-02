@@ -14,8 +14,6 @@ namespace Command{
 			SceneManager.LoadScene(sceneName);
 		}
 
-
-
 		public override void InjectArguments (List<VsnArgument> args){
 			this.sceneName = args [0].stringValue;
 		}

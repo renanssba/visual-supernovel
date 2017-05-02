@@ -6,15 +6,12 @@ namespace Command{
 
 	[CommandAttribute(CommandString="char_reset_all")]
 	public class CharacterResetAllCommand : VsnCommand {
-
-
-		public override void Execute (){
-			VsnUIManager.instance.ResetAllCharacters ();
+    
+		public override void Execute(){
+			VsnUIManager.instance.ResetAllCharacters();
 		}
 
-
-		public override void InjectArguments (List<VsnArgument> args){
+		public override void InjectArguments(List<VsnArgument> args){
 		}
-
 	}
 }

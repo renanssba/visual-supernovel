@@ -4,92 +4,108 @@ using UnityEngine;
 using Command;
 using UnityEngine.UI;
 
-public enum ExecutionState{
-	STARTING,
-	PLAYING,
-	WAITING,
-	WAITINGINPUT,
-	END,
-	NumberOfExecutionStates
+public enum ExecutionState {
+  STARTING,
+  PLAYING,
+  WAITING,
+  WAITINGINPUT,
+  END,
+  NumberOfExecutionStates
 }
+
 public class VsnController : MonoBehaviour {
 
-	public static VsnController instance;
-	public VsnCore core;
-	public ExecutionState state;
+  public static VsnController instance;
+  public VsnCore core;
+  public ExecutionState state;
+  public GameObject inputBlocker;
 
-	public int currentCommandIndex = -1;
+  public int currentCommandIndex = -1;
 
-	public List<VsnCommand> vsnCommands;
+  public List<VsnCommand> vsnCommands;
 
-	void Awake(){
-		if (instance == null){
-			instance = this;
-		}
-		state = ExecutionState.STARTING;
-		core.GetComponent<VsnCore>();
-		core.ResetWaypoints ();
-	}
+  void Awake() {
+    if(instance == null) {
+      instance = this;
+    }
+    state = ExecutionState.STARTING;
+    core.GetComponent<VsnCore>();
+    core.ResetWaypoints();
+  }
 
 
-	/// <summary>
-	/// Starts VSN with a given script path, starting from Resources root.
-	/// </summary>
-	/// <param name="scriptPath">Script path from Resources root (e.g \"VSN Scripts/myscript.txt\"</param>
-	public void StartVSN(string scriptPath){
-		StartVSNScript (scriptPath);
-	}
+  /// <summary>
+  /// Starts VSN with a given script path, starting from Resources root.
+  /// </summary>
+  /// <param name="scriptPath">Script path from Resources root (e.g \"VSN Scripts/myscript.txt\"</param>
+  public void StartVSN(string scriptPath) {
+    BlockExternalInput(true);
+    StartVSNScript(scriptPath);
+  }
 
-	void StartVSNScript (string scriptPath){
-		TextAsset textAsset = Resources.Load<TextAsset>(scriptPath);
-		string[] lines = textAsset.ToString ().Split ('\n');
+  void StartVSNScript(string scriptPath) {
+    TextAsset textAsset = Resources.Load<TextAsset>(scriptPath);
+    if(textAsset == null){
+      Debug.LogWarning("Error loading VSN Script. Please verify its path.");
+      return;
+    }
 
-		vsnCommands = core.ParseVSNCommands (lines);
+    string[] lines = textAsset.ToString().Split('\n');
+
+    vsnCommands = core.ParseVSNCommands(lines);
 			
-		StartCoroutine (StartExecutingCommands ());
+    StartCoroutine(StartExecutingCommands());
+  }
 
-	}
+  IEnumerator StartExecutingCommands() {
+    state = ExecutionState.PLAYING;
 
-	IEnumerator StartExecutingCommands (){
-		state = ExecutionState.PLAYING;
+    for(currentCommandIndex = 0; currentCommandIndex < vsnCommands.Count; currentCommandIndex++) {
+      VsnCommand currentCommand = vsnCommands[currentCommandIndex];
+      while(state != ExecutionState.PLAYING) {			
+        yield return null;
+      }
 
-		for (currentCommandIndex = 0; currentCommandIndex < vsnCommands.Count ; currentCommandIndex++){
-			VsnCommand currentCommand = vsnCommands [currentCommandIndex];
-			while (state != ExecutionState.PLAYING) {			
-				yield return null;
-			}
+      currentCommand.Execute();
+    }
+    FinishVSN();
+  }
 
-			currentCommand.Execute ();
-		}
-	}
+  void FinishVSN(){
+    BlockExternalInput(false);
+  }
 
-	public int FindNextElseOrEndifCommand(){
-		List<VsnCommand> commands = VsnController.instance.vsnCommands;
+  public void BlockExternalInput(bool value){
+    inputBlocker.SetActive(value);
+  }
 
-		int index = this.currentCommandIndex+1;
+  public int FindNextElseOrEndifCommand() {
+    List<VsnCommand> commands = VsnController.instance.vsnCommands;
 
-		int nestedIfCommandsFound = 0;
+    int index = this.currentCommandIndex + 1;
 
-		for (int i = index; i < commands.Count; i++) {
+    int nestedIfCommandsFound = 0;
 
-			VsnCommand command = commands [i];
+    for(int i = index; i < commands.Count; i++) {
 
-			if (command.GetType () == typeof(IfCommand)) {
-				nestedIfCommandsFound += 1;
-			} else if (command.GetType () == typeof(EndIfCommand)) {
-				if (nestedIfCommandsFound == 0) {
-					return command.commandIndex;
-				} else {
-					nestedIfCommandsFound -= 1;
-				}
-			} else if (command.GetType () == typeof(ElseCommand)) {
-				if (nestedIfCommandsFound == 0) {
-					return command.commandIndex;
-				}
-			}
+      VsnCommand command = commands[i];
 
-		}
+      if(command.GetType() == typeof(IfCommand)) {
+        nestedIfCommandsFound += 1;
+      } else if(command.GetType() == typeof(EndIfCommand)) {
+        if(nestedIfCommandsFound == 0) {
+          return command.commandIndex;
+        } else {
+          nestedIfCommandsFound -= 1;
+        }
+      } else if(command.GetType() == typeof(ElseCommand)) {
+        if(nestedIfCommandsFound == 0) {
+          return command.commandIndex;
+        }
+      }
 
-		return -1;
-	}
+    }
+
+    return -1;
+  }
 }

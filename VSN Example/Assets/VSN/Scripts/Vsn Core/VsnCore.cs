@@ -24,9 +24,9 @@ public class VsnCore : MonoBehaviour {
 
 		int commandNumber = 0;
 		foreach (string raw_line in lines) {			
-			if (raw_line == "\r" || String.IsNullOrEmpty(raw_line)) continue;
+      if (raw_line == "\r" || String.IsNullOrEmpty(raw_line)) continue;
 
-			string line = raw_line.TrimStart ();
+			string line = raw_line.TrimStart();
 
 
 			List<VsnArgument> vsnArguments = new List<VsnArgument>();
