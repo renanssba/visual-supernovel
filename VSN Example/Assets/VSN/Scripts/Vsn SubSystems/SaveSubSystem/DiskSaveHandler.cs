@@ -38,7 +38,7 @@ class DiskSaveHandler : IVsnSaveHandler{
 		bool success = false;
 		string loadedJson;
 		string saveString = GetSaveSlotPrefix (saveSlot);
-		Dictionary<string, string> loadedDictionary = LoadSavedVariables (saveString);
+		Dictionary<string, string> loadedDictionary = LoadSavedVariables(saveString);
 		callback(loadedDictionary);
 	}
 

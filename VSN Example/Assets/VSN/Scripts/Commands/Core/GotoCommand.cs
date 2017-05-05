@@ -10,7 +10,7 @@ namespace Command {
     string label;
 
     public override void Execute() {
-      VsnWaypoint waypoint = VsnController.instance.core.GetWaypointFromLabel(this.label);
+      VsnWaypoint waypoint = VsnController.instance.core.GetWaypointFromLabel(label);
 
       if(waypoint != null) {
         VsnController.instance.currentCommandIndex = waypoint.commandNumber;
@@ -19,11 +19,8 @@ namespace Command {
       }
     }
 
-
-
     public override void InjectArguments(List<VsnArgument> args) {
-      this.label = args[0].stringValue;
+      label = args[0].GetStringValue();
     }
-
   }
 }

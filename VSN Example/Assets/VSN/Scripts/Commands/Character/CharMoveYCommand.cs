@@ -17,11 +17,11 @@ namespace Command{
 
 		public override void InjectArguments (List<VsnArgument> args){
 			if (args.Count >= 2) {
-				this.characterLabel = args [0].stringValue;
-				this.characterPositionY = args [1].floatValue;
+        this.characterLabel = args [0].GetStringValue();
+        this.characterPositionY = args [1].GetNumberValue();
 
 				if (args.Count == 3) {
-					this.duration = args [2].floatValue;
+          this.duration = args [2].GetNumberValue();
 				} else {
 					duration = 0f;
 				}

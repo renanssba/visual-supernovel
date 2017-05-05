@@ -3,163 +3,160 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class VsnSaveSystem{
+public class VsnSaveSystem {
 
-	static Dictionary<string, string> savedDataDictionary;
+  static Dictionary<string, string> savedDataDictionary;
 
-	static readonly string varFloatPrefix = "VARNUMBER";
-	static readonly string varStringPrefix = "VARSTRING";
+  static readonly string varFloatPrefix = "VARNUMBER";
+  static readonly string varStringPrefix = "VARSTRING";
 
-	private static int saveSlot;
-	private static IVsnSaveHandler saveHandler;
+  private static int saveSlot;
+  private static IVsnSaveHandler saveHandler;
 
-	#region getters/setters
+  #region getters/setters
 
-	/// <summary>
-	/// Gets or sets the current save slot. Starting slot is 1.
-	/// Use 1 or more for actual save slots.
-	/// </summary>
-	/// <value>The save file.</value>
-	public static int SaveSlot {
-		get {
-			return saveSlot;
-		}
-		set{
-			if (value >= 1){
-				saveSlot = value;	
-			}
-		}
-	}
+  /// <summary>
+  /// Gets or sets the current save slot. Starting slot is 1.
+  /// Use 1 or more for actual save slots.
+  /// </summary>
+  /// <value>The save file.</value>
+  public static int SaveSlot {
+    get {
+      return saveSlot;
+    }
+    set {
+      if(value >= 1) {
+        saveSlot = value;	
+      }
+    }
+  }
 
-	public static IVsnSaveHandler SaveHandler {
-		get;
-		set;
-	}
+  public static IVsnSaveHandler SaveHandler {
+    get;
+    set;
+  }
 
-	#endregion
+  #endregion
 
-	static VsnSaveSystem(){
-		SaveSlot = 1;
-		SaveHandler = new DiskSaveHandler();
+  static VsnSaveSystem() {
+    SaveSlot = 1;
+    SaveHandler = new DiskSaveHandler();
 
-		savedDataDictionary = new Dictionary<string, string>();
-	}
-		
-	static string GetSaveSlotPrefix(bool isGlobal){
-		if (isGlobal){
-			return "0";
-		} else{
-			return SaveSlot.ToString();
-		}
-	}
+    savedDataDictionary = new Dictionary<string, string>();
+  }
 
-	#region Prefixes
+  static string GetSaveSlotPrefix(bool isGlobal) {
+    if(isGlobal) {
+      return "0";
+    } else {
+      return SaveSlot.ToString();
+    }
+  }
 
-	static string GetVariableFloatPrefix(string key, bool isGlobal){
-		return varFloatPrefix + "_" + key;
-	}
+  #region Prefixes
 
-	static string GetVariableStringPrefix(string key, bool isGlobal){
-		return varStringPrefix + "_" + key;
-	}
+  static string GetVariableFloatPrefix(string key, bool isGlobal) {
+    return varFloatPrefix + "_" + key;
+  }
 
-	#endregion
+  static string GetVariableStringPrefix(string key, bool isGlobal) {
+    return varStringPrefix + "_" + key;
+  }
 
-	#region Variables (sets, adds, gets)
+  #endregion
 
-  public static void SetVariable(string key, int value, bool isGlobal = false){
+  #region Variables (sets, adds, gets)
+
+  public static void SetVariable(string key, int value, bool isGlobal = false) {
     SetVariable(key, (float)value, isGlobal);
   }
 
-  public static void SetVariable(string key, float value, bool isGlobal = false){
-		VsnDebug.Log ("Variable " + key + " saved with value " + value);
-		string savedKey = GetVariableFloatPrefix(key, isGlobal);
+  public static void SetVariable(string key, float value, bool isGlobal = false) {
+    VsnDebug.Log("Variable " + key + " saved with value " + value);
+    string savedKey = GetVariableFloatPrefix(key, isGlobal);
 
-		if (savedDataDictionary.ContainsKey(savedKey)){
-			savedDataDictionary[savedKey] = value.ToString();
-		} else{
-			savedDataDictionary.Add(savedKey, value.ToString());
-		}
-	}
+    if(savedDataDictionary.ContainsKey(savedKey)) {
+      savedDataDictionary[savedKey] = value.ToString();
+    } else {
+      savedDataDictionary.Add(savedKey, value.ToString());
+    }
+  }
 
-	public static void SetVariable(string key, string value, bool isGlobal = false){
-		VsnDebug.Log ("Variable " + key + " saved with value " + value);
-		string savedKey = GetVariableStringPrefix(key, isGlobal);
+  public static void SetVariable(string key, string value, bool isGlobal = false) {
+    VsnDebug.Log("Variable " + key + " saved with value " + value);
+    string savedKey = GetVariableStringPrefix(key, isGlobal);
 
-		if (savedDataDictionary.ContainsKey(savedKey)){
-			savedDataDictionary[savedKey] = value.ToString();
-		} else{
-			savedDataDictionary.Add(savedKey, value.ToString());
-		}
-	}
+    if(savedDataDictionary.ContainsKey(savedKey)) {
+      savedDataDictionary[savedKey] = value.ToString();
+    } else {
+      savedDataDictionary.Add(savedKey, value.ToString());
+    }
+  }
 
-	public static void AddVariable(string key, float amount, bool isGlobal = false){
-		string savedKey = GetVariableFloatPrefix(key, isGlobal);
+  public static void AddVariable(string key, float amount, bool isGlobal = false) {
+    string savedKey = GetVariableFloatPrefix(key, isGlobal);
 
-		if (savedDataDictionary.ContainsKey(savedKey)){			
-			float currentValue;
-			if (float.TryParse(savedDataDictionary[savedKey], out currentValue)){
-				savedDataDictionary[savedKey] =  (currentValue + amount).ToString();
-			}
+    if(savedDataDictionary.ContainsKey(savedKey)) {			
+      float currentValue;
+      if(float.TryParse(savedDataDictionary[savedKey], out currentValue)) {
+        savedDataDictionary[savedKey] = (currentValue + amount).ToString();
+      }
 
-		} else{
-			savedDataDictionary.Add(savedKey, amount.ToString());
-		}
-	}
+    } else {
+      savedDataDictionary.Add(savedKey, amount.ToString());
+    }
+  }
 
-  public static int GetIntVariable(string key, int defaultValue = 0){
+  public static int GetIntVariable(string key, int defaultValue = 0) {
     return (int)GetFloatVariable(key, (float)defaultValue);
   }
 
-  public static float GetFloatVariable(string key, float defaultValue = 0f){
+  public static float GetFloatVariable(string key, float defaultValue = 0f) {
     string savedKey = GetVariableFloatPrefix(key, false);
 
-		if (savedDataDictionary.ContainsKey(savedKey)){
-			float currentValue;
-			if (float.TryParse(savedDataDictionary[savedKey], out currentValue)){	
-				return currentValue;
-			}
-		}
+    if(savedDataDictionary.ContainsKey(savedKey)) {
+      float currentValue;
+      if(float.TryParse(savedDataDictionary[savedKey], out currentValue)) {	
+        return currentValue;
+      }
+    }
 
     return defaultValue;
-	}
+  }
 
-  public static string GetStringVariable(string key, string defaultValue = ""){
+  public static string GetStringVariable(string key, string defaultValue = "") {
     string savedKey = GetVariableStringPrefix(key, false);
 
-		if (savedDataDictionary.ContainsKey(savedKey)){
-			return savedDataDictionary[savedKey];
-		}
+    if(savedDataDictionary.ContainsKey(savedKey)) {
+      return savedDataDictionary[savedKey];
+    }
 
     return defaultValue;
-	}
+  }
 
-	#endregion
+  #endregion
 
-	#region save/load
+  #region save/load
 
-	public static void Save(int saveSlot){		
-		SaveHandler.Save(savedDataDictionary, saveSlot, (bool success) => {
-			if (success){
-				VsnDebug.Log("VSN SAVE success");
-			} else{
+  public static void Save(int saveSlot) {		
+    SaveHandler.Save(savedDataDictionary, saveSlot, (bool success) => {
+      if(success) {
+        VsnDebug.Log("VSN SAVE success");
+      } else {
 				
-			}
-		});
-	}
+      }
+    });
+  }
 
-	public static void Load(int saveSlot){
-		SaveHandler.Load(savedDataDictionary, saveSlot, (Dictionary<string,string> dictionary) => {
-			if (dictionary != null){
-				savedDataDictionary = dictionary;
-				VsnDebug.Log("VSN LOAD success");
-			}
+  public static void Load(int saveSlot) {
+    SaveHandler.Load(savedDataDictionary, saveSlot, (Dictionary<string,string> dictionary) => {
+      if(dictionary != null) {
+        savedDataDictionary = dictionary;
+        VsnDebug.Log("VSN LOAD success");
+      }
+    });
+  }
 
-		});
-
-
-	}
-
-	#endregion
+  #endregion
 
 }

@@ -21,8 +21,8 @@ namespace Command {
 
     public override void InjectArguments(List<VsnArgument> args) {
       if(args.Count == 2) {
-        this.characterLabel = args[0].stringValue;
-        this.characterFilename = args[1].stringValue;
+        this.characterLabel = args[0].GetStringValue();
+        this.characterFilename = args[1].GetStringValue();
       }
     }
 

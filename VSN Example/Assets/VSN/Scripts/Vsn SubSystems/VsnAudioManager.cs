@@ -12,13 +12,10 @@ public class VsnAudioManager : MonoBehaviour {
 		if (instance == null){
 			instance = this;
 		}
-
-		this.audioSource = GetComponent<AudioSource>();
+		audioSource = GetComponent<AudioSource>();
 	}
 
 	public void PlaySfx(AudioClip audioClip){
-		Debug.Log("Playing audioclip...");
-		this.audioSource.PlayOneShot(audioClip);
+		audioSource.PlayOneShot(audioClip);
 	}
-
 }

@@ -19,7 +19,7 @@ namespace Command{
 
 		public override void InjectArguments (List<VsnArgument> args){
 			if (args.Count >= 1){
-				this.shakeIntensity = args[0].variableReferenceValue;
+        this.shakeIntensity = args[0].GetVariableReference();
 			}
 		}
 

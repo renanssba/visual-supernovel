@@ -2,28 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Command{
+namespace Command {
 
-	[CommandAttribute(CommandString="add_var")]
-	public class AddVariableCommand : VsnCommand {
+  [CommandAttribute(CommandString = "add_var")]
+  public class AddVariableCommand : VsnCommand {
 
-		string variableName;
-		float numberValue;
+    VsnArgument variableName;
+    VsnArgument valueToSet;
 
-		public override void Execute (){
-			float oldValue = VsnSaveSystem.GetFloatVariable(variableName);
-			float newValue = oldValue + numberValue;
+    public override void Execute() {
+      float oldValue = VsnSaveSystem.GetFloatVariable(variableName.GetVariableReference());
+      float newValue = oldValue + valueToSet.GetNumberValue();
 
-			VsnSaveSystem.SetVariable(variableName, newValue);
-		}
+      Debug.LogWarning("Setting " + variableName.GetVariableReference() + " to add more "+ valueToSet.GetNumberValue());
 
+      VsnSaveSystem.SetVariable(variableName.GetVariableReference(), newValue);
+      VsnSaveSystem.Save(0);
+    }
 
-		public override void InjectArguments (List<VsnArgument> args){
-			if (args.Count >= 2){
-				this.variableName = args[0].variableReferenceValue;
-				this.numberValue = args[1].floatValue;
-			} 
-		}
-
-	}
+    public override void InjectArguments(List<VsnArgument> args) {
+      if(args.Count >= 2) {
+        this.variableName = args[0];
+        this.valueToSet = args[1];
+      }
+    }
+  }
 }

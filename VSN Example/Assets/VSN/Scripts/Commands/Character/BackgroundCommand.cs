@@ -2,27 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Command{
+namespace Command {
 
-	[CommandAttribute(CommandString="bg")]
-	public class BackgroundCommand : VsnCommand {
+  [CommandAttribute(CommandString = "bg")]
+  public class BackgroundCommand : VsnCommand {
 
-		string backgroundFilename;
+    string backgroundFilename;
 
-		public override void Execute (){
-			Sprite backgroundSprite = Resources.Load<Sprite>("Backgrounds/" + backgroundFilename);
-      if(backgroundSprite == null){
+    public override void Execute() {
+      Sprite backgroundSprite = Resources.Load<Sprite>("Backgrounds/" + backgroundFilename);
+      if(backgroundSprite == null) {
         Debug.LogError("Error loading " + backgroundFilename + " character sprite. Please check its path");
         return;
       }
-			VsnUIManager.instance.SetBackground(backgroundSprite);
-		}
+      VsnUIManager.instance.SetBackground(backgroundSprite);
+    }
 
-		public override void InjectArguments (List<VsnArgument> args){
-			if (args.Count >= 1) {
-				this.backgroundFilename = args [0].stringValue;
-			}
-		}
+    public override void InjectArguments(List<VsnArgument> args) {
+      if(args.Count >= 1) {
+        this.backgroundFilename = args[0].GetStringValue();
+      }
+    }
 
-	}
+  }
 }

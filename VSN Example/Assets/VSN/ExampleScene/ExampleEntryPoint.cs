@@ -7,6 +7,8 @@ using UnityEngine;
 /// </summary>
 public class ExampleEntryPoint : MonoBehaviour {
 
+  public string scriptToPlay;
+
 
 	void Start () {
 		// Script is in the Resources folder. (e.g "VSN Scripts/example3" loads from "Resources/VSN Scripts/example3").
@@ -17,7 +19,7 @@ public class ExampleEntryPoint : MonoBehaviour {
 
 		VsnSaveSystem.Load(0);
 
-		VsnController.instance.StartVSN("VSN Scripts/example6");
+    VsnController.instance.StartVSN(scriptToPlay);
 	}
 
 }

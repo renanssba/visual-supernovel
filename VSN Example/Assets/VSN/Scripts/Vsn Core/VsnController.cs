@@ -29,8 +29,6 @@ public class VsnController : MonoBehaviour {
       instance = this;
     }
     state = ExecutionState.STARTING;
-    core.GetComponent<VsnCore>();
-    core.ResetWaypoints();
   }
 
 
@@ -46,15 +44,15 @@ public class VsnController : MonoBehaviour {
   void StartVSNScript(string scriptPath) {
     TextAsset textAsset = Resources.Load<TextAsset>(scriptPath);
     if(textAsset == null){
-      Debug.LogWarning("Error loading VSN Script. Please verify its path.");
+      Debug.LogWarning("Error loading VSN Script. Please verify the provided path.");
       return;
     }
 
     string[] lines = textAsset.ToString().Split('\n');
 
+    core.ResetWaypoints();
     vsnCommands = core.ParseVSNCommands(lines);
-			
-    StartCoroutine(StartExecutingCommands());
+	StartCoroutine(StartExecutingCommands());
   }
 
   IEnumerator StartExecutingCommands() {

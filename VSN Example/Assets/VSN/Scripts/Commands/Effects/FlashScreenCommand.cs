@@ -17,7 +17,7 @@ namespace Command{
 
 		public override void InjectArguments (List<VsnArgument> args){
 			if (args.Count >= 1){
-				this.duration = args [0].floatValue;
+        this.duration = args [0].GetNumberValue();
 			} else{
 				this.duration = 0.2f; //default
 			}

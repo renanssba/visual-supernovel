@@ -18,8 +18,8 @@ namespace Command{
 
 		public override void InjectArguments (List<VsnArgument> args){
 			if (args.Count >= 2){
-				this.shakeIntensity = args[0].floatValue;
-				this.shakeDuration = args[1].floatValue;
+        this.shakeIntensity = args[0].GetNumberValue();
+        this.shakeDuration = args[1].GetNumberValue();
 			} else{
 				shakeDuration = 0.5f;
 				shakeIntensity = 1f;

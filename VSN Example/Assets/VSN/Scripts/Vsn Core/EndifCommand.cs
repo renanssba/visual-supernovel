@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Command{
+namespace Command {
 
-	[CommandAttribute(CommandString="endif")]
-	public class EndIfCommand : VsnCommand {
+  [CommandAttribute(CommandString = "endif")]
+  public class EndIfCommand : VsnCommand {
 
-		public override void Execute (){
+    public override void Execute() {
 
-		}
+    }
 
-		public override void InjectArguments (List<VsnArgument> args){
+    public override void InjectArguments(List<VsnArgument> args) {
 
-		}
+    }
 
-	}
+  }
 }

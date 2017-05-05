@@ -19,7 +19,7 @@ namespace Command{
 
 
 		public override void InjectArguments (List<VsnArgument> args){
-			this.label = args [0].stringValue;
+      this.label = args [0].GetStringValue();
 		}
 
 	}

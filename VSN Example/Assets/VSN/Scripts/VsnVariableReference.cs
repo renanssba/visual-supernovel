@@ -2,11 +2,26 @@
 
 public class VsnVariableReference : VsnArgument{
 
-	string value;
+  protected string variableReferenceValue;
 
 	public VsnVariableReference(string variableName){
-		this.variableReferenceValue = variableName;
+		variableReferenceValue = variableName;
 	}
 
+  public override VsnArgumentType GetArgumentType(){
+    return VsnArgumentType.variableArg;
+  }
+
+  public override float GetNumberValue(){
+    return VsnSaveSystem.GetFloatVariable(variableReferenceValue);
+  }
+
+  public override string GetStringValue(){
+    return VsnSaveSystem.GetStringVariable(variableReferenceValue);
+  }
+
+  public override string GetVariableReference(){
+    return variableReferenceValue;
+  }
 }
 

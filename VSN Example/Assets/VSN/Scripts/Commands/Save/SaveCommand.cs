@@ -18,7 +18,7 @@ namespace Command {
 
     public override void InjectArguments(List<VsnArgument> args) {
       if(args.Count >= 1) {
-        saveSlot = args[0].floatValue;
+        saveSlot = args[0].GetNumberValue();
       } else {
         saveSlot = 0;
       }

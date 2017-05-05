@@ -20,7 +20,7 @@ namespace Command{
 
 		public override void InjectArguments(List<VsnArgument> args){
 			if(args.Count >= 1){
-				this.sfxName = args [0].stringValue;
+        this.sfxName = args [0].GetStringValue();
 			}
 		}
 

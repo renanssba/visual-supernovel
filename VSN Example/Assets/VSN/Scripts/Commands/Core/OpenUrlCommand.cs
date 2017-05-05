@@ -4,22 +4,19 @@ using UnityEngine;
 
 namespace Command {
 
-  [CommandAttribute(CommandString = "char_flip")]
-  public class FlipCharacterCommand : VsnCommand {
+  [CommandAttribute(CommandString = "open_url")]
+  public class OpenUrlCommand : VsnCommand {
 
-    string characterLabel;
+    VsnArgument url;
 
     public override void Execute() {
-      VsnUIManager.instance.FlipCharacterSprite(characterLabel);
+      Application.OpenURL(url.GetStringValue());
     }
-
-
 
     public override void InjectArguments(List<VsnArgument> args) {
       if(args.Count >= 1) {
-        this.characterLabel = args[0].GetStringValue();
+        url = args[0];
       }
     }
-
   }
 }

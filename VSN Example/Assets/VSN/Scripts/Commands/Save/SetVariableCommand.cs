@@ -7,18 +7,19 @@ namespace Command {
   [CommandAttribute(CommandString = "set_var")]
   public class SetVariableCommand : VsnCommand {
 
-    string variableName;
-    float numberValue;
+    VsnArgument variableToSet;
+    VsnArgument valueToSet;
 
     public override void Execute() {
-      VsnSaveSystem.SetVariable(variableName, numberValue);
+      Debug.LogWarning("Setting " + variableToSet.GetVariableReference() + " to value: "+ valueToSet.GetNumberValue());
+      VsnSaveSystem.SetVariable(variableToSet.GetVariableReference(), valueToSet.GetNumberValue());
       VsnSaveSystem.Save(0);
     }
 
     public override void InjectArguments(List<VsnArgument> args) {
       if(args.Count >= 2) {
-        this.variableName = args[0].stringValue;
-        this.numberValue = args[1].floatValue;
+        this.variableToSet = args[0];
+        this.valueToSet = args[1];
       }
     }
   }

@@ -12,9 +12,6 @@ public class VsnWaypoint{
 	public VsnWaypoint(string label, int commandNumber){
 		this.label = label;
 		this.commandNumber = commandNumber;
-
-
-
 	}
 }
 

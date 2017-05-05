@@ -15,7 +15,7 @@ namespace Command{
 		}
 
 		public override void InjectArguments (List<VsnArgument> args){
-			this.sceneName = args [0].stringValue;
+      this.sceneName = args [0].GetStringValue();
 		}
 
 	}

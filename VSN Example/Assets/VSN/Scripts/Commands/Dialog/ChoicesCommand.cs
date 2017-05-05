@@ -25,8 +25,8 @@ namespace Command{
 			labels = new string[args.Count / 2];
 			int baseIndex = 0;
 			for (int i = 0; i < args.Count; i += 2) {
-				choices [baseIndex] = args [i].stringValue;
-				labels [baseIndex] = args [i+1].stringValue;
+        choices [baseIndex] = args [i].GetStringValue();
+        labels [baseIndex] = args [i+1].GetStringValue();
 				baseIndex++;
 			}
 		}
