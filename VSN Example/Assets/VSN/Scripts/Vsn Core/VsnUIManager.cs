@@ -50,7 +50,7 @@ public class VsnUIManager : MonoBehaviour {
       vsnMessageTitlePanel.gameObject.SetActive(true);
     }
     vsnMessageText.text = msg;
-    vsnMessageText.GetComponent<TextConsoleSimulator>().StartShowingCharacters();
+    vsnMessageText.GetComponent<VsnConsoleSimulator>().StartShowingCharacters();
   }
 
   public void SetTextTitle(string messageTitle) {
@@ -60,7 +60,7 @@ public class VsnUIManager : MonoBehaviour {
   void OnScreenButtonClick() {
     if(isTextAppearing) {
       isTextAppearing = false;
-      vsnMessageText.GetComponent<TextConsoleSimulator>().FinishShowingCharacters();
+      vsnMessageText.GetComponent<VsnConsoleSimulator>().FinishShowingCharacters();
     } else {
       if(VsnController.instance.state == ExecutionState.WAITINGINPUT) {
         VsnController.instance.state = ExecutionState.PLAYING;

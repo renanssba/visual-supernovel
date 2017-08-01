@@ -9,7 +9,7 @@ public class VsnEffectManager : MonoBehaviour {
   public static VsnEffectManager instance;
   public Image flashScreenImage;
   public Image fadeImage;
-  public Image graphicsPanel;
+  public GameObject graphicsPanel;
 
 
   void Awake() {

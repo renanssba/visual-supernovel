@@ -52,7 +52,7 @@ public class VsnController : MonoBehaviour {
 
     core.ResetWaypoints();
     vsnCommands = core.ParseVSNCommands(lines);
-	StartCoroutine(StartExecutingCommands());
+		StartCoroutine(StartExecutingCommands());
   }
 
   IEnumerator StartExecutingCommands() {
