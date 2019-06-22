@@ -1,8 +1,8 @@
 say "Hello, player. I'm an example of how to use VSN."
 say "I'll be creating a waypoint now. And create an infinite loop with it!"
 
-waypoint "mylabel"
+waypoint mylabel
 
 say "OK! Waypoint created. Now, if I call a GOTO command, I'll be going back to it"
 say "Let's try that."
-goto "mylabel"
+goto mylabel

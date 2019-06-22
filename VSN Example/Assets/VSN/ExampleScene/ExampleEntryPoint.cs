@@ -8,18 +8,24 @@ using UnityEngine;
 public class ExampleEntryPoint : MonoBehaviour {
 
   public string scriptToPlay;
+  public bool loadScriptOnStart = false;
 
 
-	void Start () {
-		// Script is in the Resources folder. (e.g "VSN Scripts/example3" loads from "Resources/VSN Scripts/example3").
-		// "example1": basic Say, goto, waypoint
-		// "example2": say with rich tags, choices
-		// "example3": characters, alpha, move, say with text
-		// "example4": example of transition with movex and wait with a character
-
-		VsnSaveSystem.Load(0);
-
-    VsnController.instance.StartVSN(scriptToPlay);
+  // Script is in the Resources folder. (e.g "VSN Scripts/example3" loads from "Resources/VSN Scripts/example3").
+  // "example1": basic Say, goto, waypoint
+  // "example2": say with rich tags, choices
+  // "example3": characters, alpha, move, say with text
+  // "example4": example of transition with movex and wait with a character
+	
+  void Start () {
+    if(loadScriptOnStart){
+//  		VsnSaveSystem.Load(0);
+      LoadScript();
+    }
 	}
+
+  public void LoadScript(){
+    VsnController.instance.StartVSN(scriptToPlay);
+  }
 
 }

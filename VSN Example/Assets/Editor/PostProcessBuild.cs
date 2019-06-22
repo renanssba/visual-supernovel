@@ -26,7 +26,7 @@ public class PostProcessBuild {
     case BuildTarget.Android:
     case BuildTarget.StandaloneOSXIntel:
     case BuildTarget.StandaloneOSXIntel64:
-    case BuildTarget.StandaloneOSXUniversal:
+    case BuildTarget.StandaloneOSX:
       RenameRecentBuild(target, pathToBuiltProject, builtDirectoryPath);
       break;
     case BuildTarget.StandaloneWindows:
@@ -130,7 +130,7 @@ public class PostProcessBuild {
       return ".apk";
     case BuildTarget.StandaloneOSXIntel:
     case BuildTarget.StandaloneOSXIntel64:
-    case BuildTarget.StandaloneOSXUniversal:
+    case BuildTarget.StandaloneOSX:
       return ".app";
     default:
       return "";
@@ -149,7 +149,7 @@ public class PostProcessBuild {
       return "Android/";
     case BuildTarget.StandaloneOSXIntel:
     case BuildTarget.StandaloneOSXIntel64:
-    case BuildTarget.StandaloneOSXUniversal:
+    case BuildTarget.StandaloneOSX:
       return "Mac/";
     case BuildTarget.StandaloneWindows:
     case BuildTarget.StandaloneWindows64:

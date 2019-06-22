@@ -2,11 +2,11 @@
 say "I'll ask you a question and you'll have to answer it correctly, otherwise I'll keep asking it to you."
 say "What do you think about turtles?"
 waypoint "before_question"
-choices "I LOVE turtles!" "love_turtles" "Nah, turtles are boring" "boring_turtles"
+choices "I LOVE turtles!" love_turtles "Nah, turtles are boring" boring_turtles
 
-waypoint "boring_turtles"
+waypoint boring_turtles
 say "Are you out of your mind, human? Turtles are AMAZING ANIMALS!"
 goto "before_question"
-waypoint "love_turtles"
+waypoint love_turtles
 say "Yes! That's my kind of human! Turtles are the best!"
 say "Now goodbye :)"
